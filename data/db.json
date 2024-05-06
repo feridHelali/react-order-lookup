@@ -1,0 +1,74 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "label": "Télévision SAMSUNG T325",
+            "category": "Televison",
+            "price": 2300
+        },
+        {
+            "id": 2,
+            "label": "Cuisinière ATLAS 6532",
+            "category": "Cuisiniere",
+            "price": 700
+        },
+        {
+            "id": 3,
+            "label": "Climatiseur SUMSUNG 24BTU",
+            "category": "Climatiseur",
+            "price": 2300
+        },
+        {
+            "id": 4,
+            "label": "Refrigerateur Arcelik ART230",
+            "category": "Televison",
+            "price": 1500
+        }
+    ],
+    "clients": [
+        {
+            "id": 1,
+            "name": "Ste alfa Computers",
+            "city": "Mahdia"
+        },
+        {
+            "id": 2,
+            "name": "Ste Em Manar",
+            "city": "Sousse"
+        }
+    ],
+    "devis": [
+        {
+            "numero": 1,
+            "date": "2024-05-01",
+            "client":1,
+            "total":13800
+        },
+        {
+            "numero": 2,
+            "date": "2024-05-01",
+            "client":2,
+            "total":5200
+        },
+        {
+            "numero": 3,
+            "date": "2024-05-01",
+            "client":1,
+            "total":6300
+        }
+    ],
+    "ligneDevis": [
+        {
+            "id": 1,
+            "numeroDevis": 1,
+            "product": 1,
+            "qte": 1
+        },
+        {
+            "id": 2,
+            "numeroDevis": 1,
+            "product": 1,
+            "qte": 3
+        }
+    ]
+}
