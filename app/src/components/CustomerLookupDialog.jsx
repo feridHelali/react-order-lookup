@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import {
   Box,
   Button,
@@ -16,44 +16,37 @@ import {
   Tr,
   Th,
   Td,
+  Heading,
 } from '@chakra-ui/react';
+import { useOrderContext } from './devis/hooks/useOrderContext';
 
 const CustomerLookupDialog = ({ isOpen, onClose, onSelectCustomer }) => {
-  const [customers, setCustomers] = useState([]);
+  const {store,isLoading,error}=useOrderContext()
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    const fetchCustomers = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/clients');
-        setCustomers(response.data);
-        setFilteredCustomers(response.data);
-      } catch (error) {
-        console.error('Error fetching customers:', error);
-      }
-    };
-
-    fetchCustomers();
-  }, []);
+ 
 
   useEffect(() => {
     if (!searchTerm) {
-      setFilteredCustomers(customers);
+      setFilteredCustomers(store.customers);
       return;
     }
 
-    const filtered = customers.filter(
+    const filtered = store.customers.filter(
       (customer) =>
         customer.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredCustomers(filtered);
-  }, [searchTerm, customers]);
+  }, [searchTerm, store.customers]);
 
   const handleSelectCustomer = (customer) => {
     onSelectCustomer(customer);
     onClose();
   };
+
+  if(isLoading) return <Heading>Loading ....</Heading>
+  if(error) return <Heading>{error.message}</Heading>
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">

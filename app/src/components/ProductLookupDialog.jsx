@@ -86,7 +86,7 @@ const ProductLookupDialog = ({ isOpen, onClose, onSelectProduct,orderLineIndex  
                     <Td>{product.price}</Td>
                     <Td>
                       <Button size="sm" onClick={() => handleSelectProduct(product)}>
-                        Select
+                         Select
                       </Button>
                     </Td>
                   </Tr>

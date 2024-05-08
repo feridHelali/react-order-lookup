@@ -13,102 +13,23 @@ import {
 } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
 import ProductLookupDialog from "../ProductLookupDialog";
-
-const initialState = {
-  order: {
-    customerId: null,
-    orderLines: [],
-  },
-  selectedCustomer: null,
-  selectedProduct: null,
-  customers: [],
-  products: [],
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "SET_CUSTOMERS":
-      return { ...state, customers: action.payload };
-    case "SET_PRODUCTS":
-      return { ...state, products: action.payload };
-    case "SELECT_CUSTOMER":
-      return {
-        ...state,
-        order: { ...state.order, customerId: action.payload },
-      };
-    case "ADD_ORDER_LINE":
-      return {
-        ...state,
-        order: {
-          ...state.order,
-          orderLines: [
-            ...state.order.orderLines,
-            { product: null, quantity: 1 },
-          ],
-        },
-      };
-    case "UPDATE_ORDER_LINE":
-      return {
-        ...state,
-        order: {
-          ...state.order,
-          orderLines: action.payload,
-        },
-      };
-    case "SELECT_PRODUCT":
-      const { index, id } = action.payload;
-      const orderLines = [...state.order.orderLines];
-      orderLines[index].product = id;
-      return { ...state, order: { ...state.order, orderLines } };
-    case "UPDATE_QUANTITY":
-      const { lineIndex, quantity } = action.payload;
-      const updatedOrderLines = [...state.order.orderLines];
-      updatedOrderLines[lineIndex].quantity = quantity;
-      return {
-        ...state,
-        order: { ...state.order, orderLines: updatedOrderLines },
-      };
-    case "SET_SELECTED_CUSTOMER":
-      return { ...state, selectedCustomer: action.payload };
-    case "SET_SELECTED_PRODUCT":
-      return { ...state, selectedProduct: action.payload };
-    case "SAVE_ORDER":
-      // Implement saving order to API
-      return state;
-    default:
-      return state;
-  }
-};
+import { useOrderContext } from "./hooks/useOrderContext";
+import {
+  addOrderLine,
+  saveOrder,
+  selectCustomer,
+  selectProduct,
+  setSelectedCustomer,
+  setSelectedProduct,
+  updateOrderLine,
+  updateQuantity,
+} from "./hooks/actions";
 
 const DevisForm = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const {store, dispatch} = useOrderContext();
   const [isOpenCustomerDialog, setIsOpenCustomerDialog] = useState(false);
   const [isOpenProductDialog, setIsOpenProductDialog] = useState(false);
   const [selectedOrderLineIndex, setSelectedOrderLineIndex] = useState(null);
-
-  useEffect(() => {
-    // Fetch customers and products data
-    const fetchCustomers = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/clients");
-        dispatch({ type: "SET_CUSTOMERS", payload: response.data });
-      } catch (error) {
-        console.error("Error fetching customers:", error);
-      }
-    };
-
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/products");
-        dispatch({ type: "SET_PRODUCTS", payload: response.data });
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchCustomers();
-    fetchProducts();
-  }, []);
 
   const handleOpenCustomerDialog = () => {
     setIsOpenCustomerDialog(true);
@@ -128,37 +49,37 @@ const DevisForm = () => {
   };
 
   const handleSelectCustomer = (customer) => {
-    dispatch({ type: "SELECT_CUSTOMER", payload: customer.id });
+    dispatch(selectCustomer(customer.id));
     setIsOpenCustomerDialog(false);
-    dispatch({ type: "SET_SELECTED_CUSTOMER", payload: customer });
+    dispatch(setSelectedCustomer(customer));
   };
 
   const handleSelectProduct = (product) => {
     const index = selectedOrderLineIndex;
-    const updatedOrderLines = [...state.order.orderLines];
+    const updatedOrderLines = [...store.order.orderLines];
     updatedOrderLines[index] = {
       ...updatedOrderLines[index],
       product: product.id,
       label: product.label,
-      cateogory:product.cateogory,
+      cateogory: product.cateogory,
       price: product.price, // Assuming 'price' is the field containing the product price
     }; // Get the selected order line index
-    dispatch({ type: "SELECT_PRODUCT", payload: { index, id: product.id } });
+    dispatch(selectProduct(index,  product.id ));
     setIsOpenProductDialog(false);
-    dispatch({ type: "SET_SELECTED_PRODUCT", payload: product });
-    dispatch({ type: "UPDATE_ORDER_LINE", payload: updatedOrderLines });
+    dispatch(setSelectedProduct(product));
+    dispatch(updateOrderLine(updatedOrderLines));
   };
 
   const handleAddOrderLine = () => {
-    dispatch({ type: "ADD_ORDER_LINE" });
+    dispatch(addOrderLine());
   };
 
   const handleQuantityChange = (quantity, lineIndex) => {
-    dispatch({ type: "UPDATE_QUANTITY", payload: { lineIndex, quantity } });
+    dispatch(updateQuantity({ lineIndex, quantity }));
   };
 
   const handleSaveOrder = () => {
-    dispatch({ type: "SAVE_ORDER" });
+    dispatch(saveOrder());
     // Call API to save order
   };
 
@@ -167,10 +88,10 @@ const DevisForm = () => {
       <h2>Order Form</h2>
       {/* Customer Selection */}
       <Button onClick={handleOpenCustomerDialog}>Select Customer</Button>
-      {state.selectedCustomer && (
+      {store.selectedCustomer && (
         <div>
-          Selected Customer: {state.selectedCustomer.id} -{" "}
-          {state.selectedCustomer.name} - {state.selectedCustomer.city}
+          Selected Customer: {store.selectedCustomer.id} -{" "}
+          {store.selectedCustomer.name} - {store.selectedCustomer.city}
         </div>
       )}
       <CustomerLookupDialog
@@ -191,16 +112,15 @@ const DevisForm = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {state.order.orderLines.map((orderLine, index) => (
+          {store.order.orderLines.map((orderLine, index) => (
             <Tr key={index}>
               <Td>
                 <Box mb={4}>
+                  {orderLine.product}
                   <Button onClick={() => handleOpenProductDialog(index)}>
                     Select Product
                   </Button>
-                  {orderLine[index] && (
-                    <div>{orderLine[index].id}</div>
-                  )}
+                  {orderLine[index] && <div>{orderLine[index].id}</div>}
                 </Box>
                 <ProductLookupDialog
                   isOpen={isOpenProductDialog}
@@ -218,7 +138,12 @@ const DevisForm = () => {
                   onChange={(e) => handleQuantityChange(e.target.value, index)}
                 />
               </Td>
-              <Td>{(orderLine[index]?.price*(+orderLine[index]?.quantity)).toFixed(3)}</Td> 
+              <Td>
+                {(
+                  orderLine[index]?.price *
+                  Number.parseFloat(orderLine[index]?.quantity)
+                ).toFixed(3)}
+              </Td>
             </Tr>
           ))}
         </Tbody>
@@ -227,7 +152,7 @@ const DevisForm = () => {
       <Button onClick={handleSaveOrder}>Save Order</Button>
       <hr />
       <pre>
-        <code>{JSON.stringify(state.order, null, 3)}</code>
+        <code>{JSON.stringify(store.order, null, 3)}</code>
       </pre>
     </Box>
   );

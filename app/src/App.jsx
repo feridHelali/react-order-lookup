@@ -1,31 +1,29 @@
-import { BrowserRouter as Router, Routes, Route,Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import DevisList from "./components/devis/DevisList";
 import DevisForm from "./components/devis/DevisForm";
 import NotfoundComponent from "./components/NotfoundComponent";
-import './App.css';
-
+import "./App.css";
+import DevisPage from "./components/devis/DevisPage";
+import { Flex, Heading } from "@chakra-ui/react";
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <ul>
-          <li>
+        <Flex flexDirection={"row"} gap={"3rem"} p={".5rem"} m={".5rem"}>
+          <Heading>
             <Link to="/">Home</Link>
-          </li>
-          <li>
-             <Link to="/devis">New Devis</Link>  
-          </li>
-          <li>
+          </Heading>
+          <Heading>
+            <Link to="/devis">New Devis</Link>
+          </Heading>
+        </Flex>
 
-          </li>
-        </ul>
         <Routes>
           <Route path="" element={<DevisList />} />
-          <Route path="devis" element={<DevisForm />} />
+          <Route path="devis" element={<DevisPage />} />
           <Route path="devis/:numero" element={<DevisForm />} />
           <Route path="*" element={<NotfoundComponent />} />
-
         </Routes>
       </Router>
     </div>
