@@ -82,7 +82,7 @@ const DevisForm = () => {
     dispatch(saveOrder());
     // Call API to save order
   };
-
+console.log(store)
   return (
     <Box>
       <h2>Order Form</h2>

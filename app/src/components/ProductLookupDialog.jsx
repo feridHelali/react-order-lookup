@@ -17,38 +17,26 @@ import {
   Th,
   Td,
 } from '@chakra-ui/react';
+import { useOrderContext } from './devis/hooks/useOrderContext';
 
 const ProductLookupDialog = ({ isOpen, onClose, onSelectProduct,orderLineIndex  }) => {
-  const [products, setProducts] = useState([]);
+  const {store}=useOrderContext()
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/products');
-        setProducts(response.data);
-        setFilteredProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products', error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   useEffect(() => {
     if (!searchTerm) {
-      setFilteredProducts(products);
+      setFilteredProducts(store.products);
       return;
     }
 
-    const filtered = products.filter(
+    const filtered = store.products.filter(
       (product) =>
         product.label.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredProducts(filtered);
-  }, [searchTerm, products]);
+  }, [searchTerm, store.products]);
 
   const handleSelectProduct = (product) => {
     onSelectProduct(product,orderLineIndex);
@@ -79,7 +67,7 @@ const ProductLookupDialog = ({ isOpen, onClose, onSelectProduct,orderLineIndex  
                 </Tr>
               </Thead>
               <Tbody>
-                {filteredProducts.map((product,index) => (
+                {filteredProducts.map((product) => (
                   <Tr key={product.id}>
                     <Td>{product.id}</Td>
                     <Td>{product.label}</Td>
