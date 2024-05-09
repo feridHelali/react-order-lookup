@@ -1,13 +1,21 @@
 // OrderContext.js
-import React, { createContext, useReducer, useContext,useState,useEffect } from "react";
+import React, {
+  createContext,
+  useReducer,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { ActionTypes, setCustomers, setProducts } from "./actions";
-import axios from 'axios'
+import axios from "axios";
+import { formatDate } from '../../../helpers/formatDate';
 
 const OrderContext = createContext();
 
 const initialState = {
   order: {
     customerId: null,
+    orderDate: formatDate(new Date()),
     orderLines: [],
   },
   selectedCustomer: null,
@@ -63,6 +71,8 @@ const reducer = (state, action) => {
       return { ...state, selectedCustomer: action.payload };
     case ActionTypes.SET_SELECTED_PRODUCT:
       return { ...state, selectedProduct: action.payload };
+    case ActionTypes.UPDATE_ORDER_DATE:
+      return { ...state, order: { ...state.order, orderDate: action.payload } };
     case ActionTypes.SAVE_ORDER:
       // Implement saving order to API
       return state;
@@ -82,7 +92,7 @@ export const OrderProvider = ({ children }) => {
         const response = await axios.get("http://localhost:3000/clients");
         dispatch(setCustomers(response.data));
       } catch (error) {
-       setError(error)
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -102,7 +112,7 @@ export const OrderProvider = ({ children }) => {
   }, []);
 
   return (
-    <OrderContext.Provider value={{ store, dispatch,isLoading,error }}>
+    <OrderContext.Provider value={{ store, dispatch, isLoading, error }}>
       {children}
     </OrderContext.Provider>
   );

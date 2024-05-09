@@ -14,8 +14,7 @@ import {
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
+
 } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
 import ProductLookupDialog from "../ProductLookupDialog";
@@ -27,9 +26,12 @@ import {
   selectProduct,
   setSelectedCustomer,
   setSelectedProduct,
+  updateOrderDate,
   updateOrderLine,
   updateQuantity,
 } from "./hooks/actions";
+
+import { formatDate } from "../../helpers/formatDate";
 
 const DevisForm = () => {
   const { store, dispatch } = useOrderContext();
@@ -86,6 +88,10 @@ const DevisForm = () => {
     dispatch(updateQuantity(lineIndex, quantityAsNumber));
   };
 
+  const handleUpdateOrderDate = (orderDate)=>{
+    dispatch(updateOrderDate(formatDate(orderDate)))
+  }
+
   const handleSaveOrder = () => {
     dispatch(saveOrder());
     // Call API to save order
@@ -95,8 +101,10 @@ const DevisForm = () => {
     <Box w={"full"} p={"1rem"} m={".5rem"}>
       <FormControl>
         <FormLabel>Numero Devis</FormLabel>
-        <Input type="text" />
-        <FormHelperText>N° de Devis est Provisoir jusqu'au Enregistrement de Devis</FormHelperText>
+      </FormControl>
+      <FormControl>
+        <FormLabel>Date Devis</FormLabel>
+        <Input type="date" value={formatDate(store.order.orderDate)} onChange={(e)=>handleUpdateOrderDate(e.target.value)}/>
       </FormControl>
       <Button onClick={handleOpenCustomerDialog}>Select Customer</Button>
       {store.selectedCustomer && (
@@ -159,7 +167,7 @@ const DevisForm = () => {
       <Button onClick={handleAddOrderLine}>Add Line</Button>
       <hr />
       <pre>
-        <code>{JSON.stringify(store.order, null, 3)}</code>
+        <code>{JSON.stringify(store, null, 3)}</code>
       </pre>
       <Button onClick={handleSaveOrder}>Save Order</Button>
     </Box>
