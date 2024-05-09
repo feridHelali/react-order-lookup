@@ -11,10 +11,10 @@ function App() {
     <div className="App">
       <Router>
         <Flex flexDirection={"row"} gap={"3rem"} p={".5rem"} m={".5rem"}>
-          <Heading>
+          <Heading as="h3" fontSize={"sm"} _hover={{backgroundColor:"teal:900"}}>
             <Link to="/">Home</Link>
           </Heading>
-          <Heading>
+          <Heading as="h3" fontSize={"sm"}>
             <Link to="/devis">New Devis</Link>
           </Heading>
         </Flex>

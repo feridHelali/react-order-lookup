@@ -6,8 +6,9 @@ import { Flex,Box,Heading } from "@chakra-ui/react";
 function DevisPage() {
   return (
     <OrderProvider>
-      <Box p={"1rem"} m={"1rem"}>
+      <Box>
         <Flex
+          w={"auto"}
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"center"}

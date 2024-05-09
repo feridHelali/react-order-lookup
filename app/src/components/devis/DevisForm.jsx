@@ -26,7 +26,7 @@ import {
 } from "./hooks/actions";
 
 const DevisForm = () => {
-  const {store, dispatch} = useOrderContext();
+  const { store, dispatch } = useOrderContext();
   const [isOpenCustomerDialog, setIsOpenCustomerDialog] = useState(false);
   const [isOpenProductDialog, setIsOpenProductDialog] = useState(false);
   const [selectedOrderLineIndex, setSelectedOrderLineIndex] = useState(null);
@@ -62,9 +62,10 @@ const DevisForm = () => {
       product: product.id,
       label: product.label,
       cateogory: product.cateogory,
+      tva:product.tva,
       price: product.price, // Assuming 'price' is the field containing the product price
     }; // Get the selected order line index
-    dispatch(selectProduct(index,  product.id ));
+    dispatch(selectProduct(index, product.id));
     setIsOpenProductDialog(false);
     dispatch(setSelectedProduct(product));
     dispatch(updateOrderLine(updatedOrderLines));
@@ -75,18 +76,17 @@ const DevisForm = () => {
   };
 
   const handleQuantityChange = (quantity, lineIndex) => {
-    dispatch(updateQuantity({ lineIndex, quantity }));
+    const quantityAsNumber=Number.parseFloat(quantity)
+    dispatch(updateQuantity(lineIndex, quantityAsNumber ));
   };
 
   const handleSaveOrder = () => {
     dispatch(saveOrder());
     // Call API to save order
   };
-console.log(store)
+  console.log(store);
   return (
-    <Box>
-      <h2>Order Form</h2>
-      {/* Customer Selection */}
+    <Box w={"full"} p={"1rem"} m={".5rem"}>
       <Button onClick={handleOpenCustomerDialog}>Select Customer</Button>
       {store.selectedCustomer && (
         <div>
@@ -108,6 +108,7 @@ console.log(store)
             <Th>Label</Th>
             <Th>Price</Th>
             <Th>Quantity</Th>
+            <Th>TVA</Th>
             <Th>Total</Th>
           </Tr>
         </Thead>
@@ -138,22 +139,20 @@ console.log(store)
                   onChange={(e) => handleQuantityChange(e.target.value, index)}
                 />
               </Td>
+              <Td>{orderLine.tva}</Td>
               <Td>
-                {(
-                  orderLine[index]?.price *
-                  Number.parseFloat(orderLine[index]?.quantity)
-                ).toFixed(3)}
+                {(orderLine.price * orderLine.quantity).toFixed(3)}
               </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
       <Button onClick={handleAddOrderLine}>Add Line</Button>
-      <Button onClick={handleSaveOrder}>Save Order</Button>
       <hr />
       <pre>
         <code>{JSON.stringify(store.order, null, 3)}</code>
       </pre>
+      <Button onClick={handleSaveOrder}>Save Order</Button>
     </Box>
   );
 };
