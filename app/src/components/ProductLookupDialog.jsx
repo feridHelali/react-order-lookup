@@ -47,7 +47,7 @@ const ProductLookupDialog = ({ isOpen, onClose, onSelectProduct,orderLineIndex  
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Customer Lookup</ModalHeader>
+        <ModalHeader>Serach Product</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Input
@@ -56,7 +56,7 @@ const ProductLookupDialog = ({ isOpen, onClose, onSelectProduct,orderLineIndex  
             onChange={(e) => setSearchTerm(e.target.value)}
             mb={4}
           />
-          <Box overflowX="auto">
+          <Box overflowX="auto" overflowY={"scroll"} maxH={"400px"}>
             <Table variant="striped">
               <Thead>
                 <Tr>
@@ -71,9 +71,9 @@ const ProductLookupDialog = ({ isOpen, onClose, onSelectProduct,orderLineIndex  
                   <Tr key={product.id}>
                     <Td>{product.id}</Td>
                     <Td>{product.label}</Td>
-                    <Td>{product.price}</Td>
+                    <Td>{product.price.toFixed(3)}</Td>
                     <Td>
-                      <Button size="sm" onClick={() => handleSelectProduct(product)}>
+                      <Button size="sm" onClick={() => handleSelectProduct(product)} colorScheme='blue'>
                          Select
                       </Button>
                     </Td>

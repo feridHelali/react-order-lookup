@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -10,12 +9,9 @@ import {
   Thead,
   Tr,
   Input,
+  Flex,
 } from "@chakra-ui/react";
-import {
-  FormControl,
-  FormLabel,
-
-} from "@chakra-ui/react";
+import { FormControl, FormLabel } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
 import ProductLookupDialog from "../ProductLookupDialog";
 import { useOrderContext } from "./hooks/useOrderContext";
@@ -32,6 +28,8 @@ import {
 } from "./hooks/actions";
 
 import { formatDate } from "../../helpers/formatDate";
+import DevisCustomerZone from "./DevisCustomerZone";
+import { AiOutlineSelect } from "react-icons/ai";
 
 const DevisForm = () => {
   const { store, dispatch } = useOrderContext();
@@ -88,9 +86,9 @@ const DevisForm = () => {
     dispatch(updateQuantity(lineIndex, quantityAsNumber));
   };
 
-  const handleUpdateOrderDate = (orderDate)=>{
-    dispatch(updateOrderDate(formatDate(orderDate)))
-  }
+  const handleUpdateOrderDate = (orderDate) => {
+    dispatch(updateOrderDate(formatDate(orderDate)));
+  };
 
   const handleSaveOrder = () => {
     dispatch(saveOrder());
@@ -98,29 +96,42 @@ const DevisForm = () => {
   };
 
   return (
-    <Box w={"full"} p={"1rem"} m={".5rem"}>
-      <FormControl>
-        <FormLabel>Numero Devis</FormLabel>
-      </FormControl>
-      <FormControl>
-        <FormLabel>Date Devis</FormLabel>
-        <Input type="date" value={formatDate(store.order.orderDate)} onChange={(e)=>handleUpdateOrderDate(e.target.value)}/>
-      </FormControl>
-      <Button onClick={handleOpenCustomerDialog}>Select Customer</Button>
-      {store.selectedCustomer && (
-        <div>
-          Selected Customer: {store.selectedCustomer.id} -{" "}
-          {store.selectedCustomer.name} - {store.selectedCustomer.city}
-        </div>
-      )}
-      <CustomerLookupDialog
-        isOpen={isOpenCustomerDialog}
-        onClose={handleCloseCustomerDialog}
-        onSelectCustomer={handleSelectCustomer}
-      />
+    <Box w={"full"} p={"1rem"} m={"1rem"} boxShadow={"xl"}>
+        <FormControl>
+          <FormLabel>Numero Devis</FormLabel>
+        </FormControl>
+        <FormControl>
+          <FormLabel>Date Devis</FormLabel>
+          <Input
+            type="date"
+            value={formatDate(store.order.orderDate)}
+            onChange={(e) => handleUpdateOrderDate(e.target.value)}
+          />
+        </FormControl>
+      <Flex flexDirection={"row"} gap={".2rem"}>
+
+        <Flex
+          flexDirection={"row"}
+          gap={"1rem"}
+          alignItems={"start"}
+          justifyContent={"start"}
+        >
+          <Button onClick={handleOpenCustomerDialog} p={"1rem"}>
+            Select Customer
+          </Button>
+          {store.selectedCustomer && (
+            <DevisCustomerZone customer={store.selectedCustomer} />
+          )}
+        </Flex>
+        <CustomerLookupDialog
+          isOpen={isOpenCustomerDialog}
+          onClose={handleCloseCustomerDialog}
+          onSelectCustomer={handleSelectCustomer}
+        />
+      </Flex>
 
       {/* Order Lines */}
-      <Table>
+      <Table boxShadow={"sm"}>
         <Thead>
           <Tr>
             <Th>Product</Th>
@@ -136,10 +147,10 @@ const DevisForm = () => {
             <Tr key={index}>
               <Td>
                 <Box mb={4}>
-                  {orderLine.product}
                   <Button onClick={() => handleOpenProductDialog(index)}>
-                    Select Product
+                    <AiOutlineSelect />
                   </Button>
+                  {orderLine.product}
                   {orderLine[index] && <div>{orderLine[index].id}</div>}
                 </Box>
                 <ProductLookupDialog
@@ -165,10 +176,10 @@ const DevisForm = () => {
         </Tbody>
       </Table>
       <Button onClick={handleAddOrderLine}>Add Line</Button>
-      <hr />
+      {/* <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre>
+      </pre> */}
       <Button onClick={handleSaveOrder}>Save Order</Button>
     </Box>
   );

@@ -51,8 +51,8 @@ const CustomerLookupDialog = ({ isOpen, onClose, onSelectCustomer }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Customer Lookup</ModalHeader>
+      <ModalContent >
+        <ModalHeader>Serach for Customer</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Input
@@ -61,8 +61,8 @@ const CustomerLookupDialog = ({ isOpen, onClose, onSelectCustomer }) => {
             onChange={(e) => setSearchTerm(e.target.value)}
             mb={4}
           />
-          <Box overflowX="auto">
-            <Table variant="striped">
+          <Box overflowX="auto" maxH={"400px"} overflowY={"scroll"}>
+            <Table variant="striped" >
               <Thead>
                 <Tr>
                   <Th>Customer Code</Th>
@@ -78,7 +78,7 @@ const CustomerLookupDialog = ({ isOpen, onClose, onSelectCustomer }) => {
                     <Td>{customer.name}</Td>
                     <Td>{customer.city}</Td>
                     <Td>
-                      <Button size="sm" onClick={() => handleSelectCustomer(customer)}>
+                      <Button size="sm" onClick={() => handleSelectCustomer(customer)} colorScheme='green'>
                         Select
                       </Button>
                     </Td>
