@@ -11,6 +11,12 @@ import {
   Tr,
   Input,
 } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+} from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
 import ProductLookupDialog from "../ProductLookupDialog";
 import { useOrderContext } from "./hooks/useOrderContext";
@@ -62,7 +68,7 @@ const DevisForm = () => {
       product: product.id,
       label: product.label,
       cateogory: product.cateogory,
-      tva:product.tva,
+      tva: product.tva,
       price: product.price, // Assuming 'price' is the field containing the product price
     }; // Get the selected order line index
     dispatch(selectProduct(index, product.id));
@@ -76,17 +82,22 @@ const DevisForm = () => {
   };
 
   const handleQuantityChange = (quantity, lineIndex) => {
-    const quantityAsNumber=Number.parseFloat(quantity)
-    dispatch(updateQuantity(lineIndex, quantityAsNumber ));
+    const quantityAsNumber = Number.parseFloat(quantity);
+    dispatch(updateQuantity(lineIndex, quantityAsNumber));
   };
 
   const handleSaveOrder = () => {
     dispatch(saveOrder());
     // Call API to save order
   };
-  console.log(store);
+
   return (
     <Box w={"full"} p={"1rem"} m={".5rem"}>
+      <FormControl>
+        <FormLabel>Numero Devis</FormLabel>
+        <Input type="text" />
+        <FormHelperText>N° de Devis est Provisoir jusqu'au Enregistrement de Devis</FormHelperText>
+      </FormControl>
       <Button onClick={handleOpenCustomerDialog}>Select Customer</Button>
       {store.selectedCustomer && (
         <div>
@@ -140,9 +151,7 @@ const DevisForm = () => {
                 />
               </Td>
               <Td>{orderLine.tva}</Td>
-              <Td>
-                {(orderLine.price * orderLine.quantity).toFixed(3)}
-              </Td>
+              <Td>{(orderLine.price * orderLine.quantity).toFixed(3)}</Td>
             </Tr>
           ))}
         </Tbody>
