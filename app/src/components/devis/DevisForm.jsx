@@ -10,6 +10,7 @@ import {
   Tr,
   Input,
   Flex,
+  flexbox,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
@@ -143,9 +144,8 @@ const DevisForm = () => {
         onClick={handleAddOrderLine}
         colorScheme="green"
         isDisabled={
-          (store.selectedCustomer === null
-            ? true
-            : false) || isNewOrderLineWithNoProduct(store.order.orderLines) 
+          (store.selectedCustomer === null ? true : false) ||
+          isNewOrderLineWithNoProduct(store.order.orderLines)
         }
       >
         Add Line +
@@ -169,12 +169,19 @@ const DevisForm = () => {
             <Tr key={index}>
               <Td>{index + 1}</Td>
               <Td>
-                <Box mb={4}>
+                <Box
+                  mb={4}
+                  display={"flex"}
+                  flexDirection={"row"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                >
+                  {store.order.orderLines[index] && (
+                    <div>{store.order.orderLines[index]?.product}</div>
+                  )}
                   <Button onClick={() => handleOpenProductDialog(index)}>
                     <AiOutlineSelect />
                   </Button>
-                  {orderLine[index]?.product}
-                  {orderLine[index] && <div>{orderLine[index]?.product}</div>}
                 </Box>
                 <ProductLookupDialog
                   isOpen={isOpenProductDialog}
@@ -194,7 +201,13 @@ const DevisForm = () => {
               </Td>
               <Td>{orderLine.tva}</Td>
               <Td>{(orderLine.price * orderLine.quantity).toFixed(3)}</Td>
-              <Td>{(orderLine.price * orderLine.quantity).toFixed(3)}</Td>
+              <Td>
+                {(
+                  orderLine.price *
+                  orderLine.quantity *
+                  (1 + orderLine.tva / 100)
+                ).toFixed(3)}
+              </Td>
               <Td>
                 {" "}
                 <Button onClick={() => handleDeleteOrderLine(index)}>X</Button>
@@ -203,6 +216,17 @@ const DevisForm = () => {
           ))}
         </Tbody>
       </Table>
+      <Box display={"flex"} flexDirection={"row"} gap={"1rem"}>
+        <span>
+          Total HT : {computeTotalHt(store.order.orderLines).toFixed(3)}
+        </span>
+        <span >
+          Total TVA : {computeTotalTVA(store.order.orderLines).toFixed(3)}
+        </span>
+        <span>
+          Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
+        </span>
+      </Box>
       <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
@@ -216,4 +240,25 @@ export default DevisForm;
 
 const isNewOrderLineWithNoProduct = (orderLines) => {
   return orderLines.some((line) => line.product === null);
+};
+
+const computeTotalHt = (orderLines) => {
+  if (orderLines?.length === 0) return 0;
+  return orderLines.reduce((total, line) => {
+    return total + line.price * line.quantity;
+  }, 0);
+};
+
+const computeTotalTTC = (orderLines) => {
+  if (orderLines?.length === 0) return 0;
+  return orderLines.reduce((total, line) => {
+    return total + line.price * line.quantity * (1 + line.tva / 100);
+  }, 0);
+};
+
+const computeTotalTVA = (orderLines) => {
+  if (orderLines?.length === 0) return 0;
+  return orderLines.reduce((total, line) => {
+    return total + line.price * line.quantity * (line.tva / 100);
+  }, 0);
 };
