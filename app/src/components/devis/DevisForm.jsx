@@ -100,7 +100,6 @@ const DevisForm = () => {
     dispatch(saveOrder());
     // Call API to save order
   };
-
   return (
     <Box w={"full"} p={"1rem"} m={"1rem"} boxShadow={"xl"}>
       <FormControl>
@@ -231,7 +230,7 @@ const DevisForm = () => {
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
       </pre> */}
-      <Button onClick={handleSaveOrder}>Save Order</Button>
+      <Button onClick={handleSaveOrder} isDisabled={!isOrderReadyToSave(store.order)} colorScheme="blue" p="1rem" m="1rem">Save Order</Button>
     </Box>
   );
 };
@@ -262,3 +261,7 @@ const computeTotalTVA = (orderLines) => {
     return total + line.price * line.quantity * (line.tva / 100);
   }, 0);
 };
+
+const isOrderReadyToSave = (order)=>{
+  return order.customerId && order.orderLines.length !==0 && !isNewOrderLineWithNoProduct(order.orderLines);
+}
