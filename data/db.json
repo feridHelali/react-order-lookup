@@ -79,6 +79,11 @@
     {
       "id": "9c4a",
       "customerId": "1",
+      "customer": {
+        "id": "1",
+        "name": "Ste alfa Computers",
+        "city": "Mahdia"
+      },
       "orderDate": "2024-05-10",
       "orderLines": [
         {
@@ -110,6 +115,11 @@
     {
       "id": "0939",
       "customerId": "2",
+      "customer": {
+        "id": "2",
+        "name": "Ste Em Manar",
+        "city": "Sousse"
+      },
       "orderDate": "2024-05-15",
       "orderLines": [
         {
@@ -134,6 +144,11 @@
       "id": "7f65",
       "customerId": "5",
       "orderDate": "2024-05-15",
+      "customer": {
+        "id": "5",
+        "name": "Karim BENZIMA",
+        "city": "Tunis"
+      },
       "orderLines": [
         {
           "id": "0820244a-0046-4844-b6de-8949a9d7d68a",
@@ -156,6 +171,11 @@
     {
       "id": "2a3f",
       "customerId": "1",
+      "customer": {
+        "id": "1",
+        "name": "Ste alfa Computers",
+        "city": "Mahdia"
+      },
       "orderDate": "2024-05-10",
       "orderLines": [
         {
@@ -173,6 +193,42 @@
           "tva": 19,
           "label": "Refrigerateur Arcelik ART230",
           "price": 1500
+        }
+      ]
+    },
+    {
+      "id": "6a6b",
+      "customerId": "1",
+      "customer": {
+        "id": "1",
+        "name": "Ste alfa Computers",
+        "city": "Mahdia"
+      },
+      "orderDate": "2024-05-10",
+      "orderLines": [
+        {
+          "id": "cbcd59c5-7cce-43bb-8ae1-56e9cf21cbb0",
+          "product": "2",
+          "quantity": 2,
+          "tva": 19,
+          "label": "Cuisinière ATLAS 6532",
+          "price": 700
+        },
+        {
+          "id": "212dd038-fd25-4834-808e-e5beb93d141f",
+          "product": "1",
+          "quantity": 2,
+          "tva": 19,
+          "label": "Télévision SAMSUNG T325",
+          "price": 2300
+        },
+        {
+          "id": "78ada1f0-9cd9-40ff-9974-4e615360dd7a",
+          "product": "3",
+          "quantity": 5,
+          "tva": 19,
+          "label": "Climatiseur SUMSUNG 24BTU",
+          "price": 2300
         }
       ]
     }

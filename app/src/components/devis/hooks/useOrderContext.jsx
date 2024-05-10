@@ -16,6 +16,7 @@ const OrderContext = createContext();
 const initialState = {
   order: {
     customerId: null,
+    customer:null,
     orderDate: formatDate(new Date()),
     orderLines: [],
   },
@@ -34,7 +35,7 @@ const reducer = (state, action) => {
     case ActionTypes.SELECT_CUSTOMER:
       return {
         ...state,
-        order: { ...state.order, customerId: action.payload },
+        order: { ...state.order, customerId: action.payload.customerId,customer:action.payload.customer },
       };
     case ActionTypes.ADD_ORDER_LINE:
       return {

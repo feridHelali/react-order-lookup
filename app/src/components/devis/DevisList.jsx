@@ -27,7 +27,8 @@ function DevisList() {
           <Tr>
             <Th>#</Th>
             <Th>Date</Th>
-            <Th>Customer</Th>
+            <Th>Customer Name</Th>
+            <Th>City</Th>
             <Th isNumeric>Total</Th>
           </Tr>
         </Thead>
@@ -37,7 +38,8 @@ function DevisList() {
               <Tr key={d?.id}>
                 <Td>{d?.id}</Td>
                 <Td>{d?.orderDate}</Td>
-                <Td>{d?.customerId}</Td>
+                <Td>{d?.customer.name}</Td>
+                <Td>{d?.customer.city}</Td>
                 <Td isNumeric>{(d?.orderLines.reduce((total,line)=>total+(line.price*(1+(line.tva/100))*line.quantity),0)).toFixed(3)}</Td>
               </Tr>
             );

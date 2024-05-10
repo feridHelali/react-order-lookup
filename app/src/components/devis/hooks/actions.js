@@ -27,9 +27,9 @@ export const ActionTypes = {
     payload: products,
   });
   
-  export const selectCustomer = (customerId) => ({
+  export const selectCustomer = (customerId,customer) => ({
     type: ActionTypes.SELECT_CUSTOMER,
-    payload: customerId,
+    payload: {customerId,customer},
   });
   
   export const addOrderLine = () => ({

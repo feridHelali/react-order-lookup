@@ -59,7 +59,7 @@ const DevisForm = () => {
   };
 
   const handleSelectCustomer = (customer) => {
-    dispatch(selectCustomer(customer.id));
+    dispatch(selectCustomer(customer.id,customer));
     setIsOpenCustomerDialog(false);
     dispatch(setSelectedCustomer(customer));
   };
@@ -230,10 +230,10 @@ const DevisForm = () => {
           Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
         </Heading>
       </Box>
-      {/* <hr />
+      <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre> */}
+      </pre>
       <Button onClick={handleSaveOrder} isDisabled={!isOrderReadyToSave(store.order)} colorScheme="blue" p="1rem" m="1rem">Save Order</Button>
     </Box>
   );
