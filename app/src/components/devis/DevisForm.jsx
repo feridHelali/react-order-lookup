@@ -30,6 +30,7 @@ import {
 import { formatDate } from "../../helpers/formatDate";
 import DevisCustomerZone from "./DevisCustomerZone";
 import { AiOutlineSelect } from "react-icons/ai";
+import "../../index.css";
 
 const DevisForm = () => {
   const { store, dispatch } = useOrderContext();
@@ -90,6 +91,10 @@ const DevisForm = () => {
     dispatch(updateOrderDate(formatDate(orderDate)));
   };
 
+  const handleDeleteOrderLine = (index) => {
+    console.log("Delete the Order line # : ", index);
+  };
+
   const handleSaveOrder = () => {
     dispatch(saveOrder());
     // Call API to save order
@@ -97,9 +102,9 @@ const DevisForm = () => {
 
   return (
     <Box w={"full"} p={"1rem"} m={"1rem"} boxShadow={"xl"}>
-        <FormControl>
-          <FormLabel>Numero Devis</FormLabel>
-        </FormControl>
+      <FormControl>
+        <FormLabel>Numero Devis</FormLabel>
+      </FormControl>
       <Flex flexDirection={"row"} gap={".2rem"}>
         <FormControl maxWidth={"50%"}>
           <FormLabel>Date Devis</FormLabel>
@@ -132,27 +137,44 @@ const DevisForm = () => {
       </Flex>
 
       {/* Order Lines */}
-      <Table boxShadow={"sm"}>
+      <br />
+      <hr />
+      <Button
+        onClick={handleAddOrderLine}
+        colorScheme="green"
+        isDisabled={
+          (store.selectedCustomer === null
+            ? true
+            : false) || isNewOrderLineWithNoProduct(store.order.orderLines) 
+        }
+      >
+        Add Line +
+      </Button>
+      <Table boxShadow={"sm"} ariant="striped" colorScheme="teal">
         <Thead>
           <Tr>
+            <Th>#</Th>
             <Th>Product</Th>
             <Th>Label</Th>
-            <Th>Price</Th>
+            <Th>Price HT</Th>
             <Th>Quantity</Th>
             <Th>TVA</Th>
-            <Th>Total</Th>
+            <Th>Total HT</Th>
+            <Th>Total TTC</Th>
+            <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
           {store.order.orderLines.map((orderLine, index) => (
             <Tr key={index}>
+              <Td>{index + 1}</Td>
               <Td>
                 <Box mb={4}>
                   <Button onClick={() => handleOpenProductDialog(index)}>
                     <AiOutlineSelect />
                   </Button>
-                  {orderLine.product}
-                  {orderLine[index] && <div>{orderLine[index].id}</div>}
+                  {orderLine[index]?.product}
+                  {orderLine[index] && <div>{orderLine[index]?.product}</div>}
                 </Box>
                 <ProductLookupDialog
                   isOpen={isOpenProductDialog}
@@ -172,18 +194,26 @@ const DevisForm = () => {
               </Td>
               <Td>{orderLine.tva}</Td>
               <Td>{(orderLine.price * orderLine.quantity).toFixed(3)}</Td>
+              <Td>{(orderLine.price * orderLine.quantity).toFixed(3)}</Td>
+              <Td>
+                {" "}
+                <Button onClick={() => handleDeleteOrderLine(index)}>X</Button>
+              </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
-      <Button onClick={handleAddOrderLine}>Add Line</Button>
-      {/* <hr />
+      <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre> */}
+      </pre>
       <Button onClick={handleSaveOrder}>Save Order</Button>
     </Box>
   );
 };
 
 export default DevisForm;
+
+const isNewOrderLineWithNoProduct = (orderLines) => {
+  return orderLines.some((line) => line.product === null);
+};
