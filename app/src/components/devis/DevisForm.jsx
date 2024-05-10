@@ -190,7 +190,7 @@ const DevisForm = () => {
                 />
               </Td>
               <Td>{orderLine.label}</Td>
-              <Td>{orderLine.price}</Td>
+              <Td>{(orderLine.price?orderLine.price:0).toFixed(3)}</Td>
               <Td>
                 <Input
                   type="number"
@@ -199,14 +199,14 @@ const DevisForm = () => {
                   onChange={(e) => handleQuantityChange(e.target.value, index)}
                 />
               </Td>
-              <Td>{orderLine.tva}</Td>
-              <Td>{(orderLine.price * orderLine.quantity).toFixed(3)}</Td>
+              <Td>{`${orderLine.tva}%`}</Td>
+              <Td>{((orderLine.price && orderLine.quantity)?(orderLine.price * orderLine.quantity):0).toFixed(3)}</Td>
               <Td>
-                {(
+                {((orderLine.price && orderLine.quantity)?(
                   orderLine.price *
                   orderLine.quantity *
                   (1 + orderLine.tva / 100)
-                ).toFixed(3)}
+                ):0).toFixed(3)}
               </Td>
               <Td>
                 {" "}
@@ -227,10 +227,10 @@ const DevisForm = () => {
           Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
         </Heading>
       </Box>
-      <hr />
+      {/* <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre>
+      </pre> */}
       <Button onClick={handleSaveOrder} isDisabled={!isOrderReadyToSave(store.order)} colorScheme="blue" p="1rem" m="1rem">Save Order</Button>
     </Box>
   );
