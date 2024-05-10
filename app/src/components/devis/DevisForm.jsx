@@ -10,7 +10,7 @@ import {
   Tr,
   Input,
   Flex,
-  flexbox,
+  Heading
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
@@ -216,21 +216,21 @@ const DevisForm = () => {
           ))}
         </Tbody>
       </Table>
-      <Box display={"flex"} flexDirection={"row"} gap={"1rem"}>
-        <span>
+      <Box display={"flex"} flexDirection={"column"} gap={"1rem"} maxWidth="100%" alignContent={"flex-end"} justifyItems={"flex-end"}>
+        <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total HT : {computeTotalHt(store.order.orderLines).toFixed(3)}
-        </span>
-        <span >
+        </Heading>
+        <Heading  fontSize={"sm"} fontFamily={"monospace"}>
           Total TVA : {computeTotalTVA(store.order.orderLines).toFixed(3)}
-        </span>
-        <span>
+        </Heading>
+        <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
-        </span>
+        </Heading>
       </Box>
-      <hr />
+      {/* <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre>
+      </pre> */}
       <Button onClick={handleSaveOrder}>Save Order</Button>
     </Box>
   );
