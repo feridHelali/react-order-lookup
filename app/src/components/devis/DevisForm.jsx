@@ -28,6 +28,7 @@ import {
   updateOrderLine,
   updateQuantity,
 } from "./hooks/actions";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 import { formatDate } from "../../helpers/formatDate";
 import DevisCustomerZone from "./DevisCustomerZone";
@@ -213,7 +214,7 @@ const DevisForm = () => {
               </Td>
               <Td>
                 {" "}
-                <Button onClick={() => handleDeleteOrderLine(orderLine.id)}>X</Button>
+                <Button onClick={() => handleDeleteOrderLine(orderLine.id)}><RiDeleteBin5Line /></Button>
               </Td>
             </Tr>
           ))}
@@ -230,10 +231,10 @@ const DevisForm = () => {
           Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
         </Heading>
       </Box>
-      <hr />
+      {/* <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre>
+      </pre> */}
       <Button onClick={handleSaveOrder} isDisabled={!isOrderReadyToSave(store.order)} colorScheme="blue" p="1rem" m="1rem">Save Order</Button>
     </Box>
   );
