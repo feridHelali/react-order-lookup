@@ -8,7 +8,8 @@ import React, {
 } from "react";
 import { ActionTypes, setCustomers, setProducts } from "./actions";
 import axios from "axios";
-import { formatDate } from '../../../helpers/formatDate';
+import { formatDate } from "../../../helpers/formatDate";
+import {v4 as uuid} from 'uuid'
 
 const OrderContext = createContext();
 
@@ -42,7 +43,7 @@ const reducer = (state, action) => {
           ...state.order,
           orderLines: [
             ...state.order.orderLines,
-            { product: null, quantity: 1 },
+            { id:uuid(),product: null, quantity: 1, tva:0 },
           ],
         },
       };
@@ -73,6 +74,11 @@ const reducer = (state, action) => {
       return { ...state, selectedProduct: action.payload };
     case ActionTypes.UPDATE_ORDER_DATE:
       return { ...state, order: { ...state.order, orderDate: action.payload } };
+    case ActionTypes.DELETE_ORDER_LINE:
+      const lineId=action.payload;
+      const afterDeleteLineById = state.order.orderLines.filter(line=>line.id!==lineId)
+      return {...state, order: {...state.order, orderLines: afterDeleteLineById}};
+
     case ActionTypes.SAVE_ORDER:
       // Implement saving order to API
       return state;

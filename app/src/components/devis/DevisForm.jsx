@@ -18,6 +18,7 @@ import ProductLookupDialog from "../ProductLookupDialog";
 import { useOrderContext } from "./hooks/useOrderContext";
 import {
   addOrderLine,
+  deleteOrderLine,
   saveOrder,
   selectCustomer,
   selectProduct,
@@ -92,8 +93,8 @@ const DevisForm = () => {
     dispatch(updateOrderDate(formatDate(orderDate)));
   };
 
-  const handleDeleteOrderLine = (index) => {
-    console.log("Delete the Order line # : ", index);
+  const handleDeleteOrderLine = (id) => {
+    dispatch(deleteOrderLine(id))
   };
 
   const handleSaveOrder = () => {
@@ -149,7 +150,7 @@ const DevisForm = () => {
       >
         Add Line +
       </Button>
-      <Table boxShadow={"sm"} ariant="striped" colorScheme="teal">
+      <Table boxShadow={"sm"} ariant="striped" colorScheme="teal" fontSize={"sm"} fontFamily={"monospace"}>
         <Thead>
           <Tr>
             <Th>#</Th>
@@ -165,7 +166,7 @@ const DevisForm = () => {
         </Thead>
         <Tbody>
           {store.order.orderLines.map((orderLine, index) => (
-            <Tr key={index}>
+            <Tr key={orderLine.id}>
               <Td>{index + 1}</Td>
               <Td>
                 <Box
@@ -209,13 +210,13 @@ const DevisForm = () => {
               </Td>
               <Td>
                 {" "}
-                <Button onClick={() => handleDeleteOrderLine(index)}>X</Button>
+                <Button onClick={() => handleDeleteOrderLine(orderLine.id)}>X</Button>
               </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
-      <Box display={"flex"} flexDirection={"column"} gap={"1rem"} maxWidth="100%" alignContent={"flex-end"} justifyItems={"flex-end"}>
+      <Box my="1rem" py={"1rem"} display={"flex"} flexDirection={"column"} gap={"1rem"} maxWidth="100%" alignContent={"flex-end"} justifyItems={"flex-end"}>
         <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total HT : {computeTotalHt(store.order.orderLines).toFixed(3)}
         </Heading>
@@ -226,10 +227,10 @@ const DevisForm = () => {
           Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
         </Heading>
       </Box>
-      {/* <hr />
+      <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre> */}
+      </pre>
       <Button onClick={handleSaveOrder} isDisabled={!isOrderReadyToSave(store.order)} colorScheme="blue" p="1rem" m="1rem">Save Order</Button>
     </Box>
   );

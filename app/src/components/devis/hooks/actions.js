@@ -9,7 +9,8 @@ export const ActionTypes = {
     SET_SELECTED_CUSTOMER: 'SET_SELECTED_CUSTOMER',
     SET_SELECTED_PRODUCT: 'SET_SELECTED_PRODUCT',
     SAVE_ORDER: 'SAVE_ORDER',
-    UPDATE_ORDER_DATE:'UPDATE_ORDER_DATE'
+    UPDATE_ORDER_DATE:'UPDATE_ORDER_DATE',
+    DELETE_ORDER_LINE:'DELETE_ORDER_LINE'
   };
 
 
@@ -64,4 +65,9 @@ export const ActionTypes = {
   export const updateOrderDate=(orderDate)=>({
     type: ActionTypes.UPDATE_ORDER_DATE,
     payload : orderDate
+  })
+
+  export const deleteOrderLine=(id)=>({
+    type: ActionTypes.DELETE_ORDER_LINE,
+    payload: id
   })
