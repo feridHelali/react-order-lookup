@@ -37,7 +37,8 @@ import { AiOutlineSelect } from "react-icons/ai";
 import { useEffect } from "react";
 
 const DevisForm = () => {
-  const { store, dispatch, saveOrder, getDevisByNumero } = useOrderContext();
+  const { store, dispatch, saveOrder, getDevisByNumero, updateOrder } =
+    useOrderContext();
   const [isOpenCustomerDialog, setIsOpenCustomerDialog] = useState(false);
   const [isOpenProductDialog, setIsOpenProductDialog] = useState(false);
   const [selectedOrderLineIndex, setSelectedOrderLineIndex] = useState(null);
@@ -105,9 +106,9 @@ const DevisForm = () => {
     saveOrder(store.order);
   };
 
-  const handleUpdateOrder=()=>{
-    console.log('Updating Order')
-  }
+  const handleUpdateOrder = () => {
+    updateOrder(store.order);
+  };
 
   useEffect(() => {
     if (numero) {
@@ -118,7 +119,12 @@ const DevisForm = () => {
 
   if (store.loading) return <Heading>Loading</Heading>;
   if (store.error) return <Heading colorScheme="red">{store.error}</Heading>;
-  if (store?.orderSaved) navigate("/");
+
+  // useEffect(() => {
+  //   if (store?.orderSaved || store?.orderUpdated) {
+  //     navigate("/");
+  //   }
+  // }, [store?.orderSaved, store?.orderUpdated,navigate]);
 
   return (
     <Box w={"full"} p={"1rem"} m={"1rem"} boxShadow={"xl"}>

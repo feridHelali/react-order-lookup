@@ -1,4 +1,4 @@
-// OrderContext.js
+
 import React, {
   createContext,
   useReducer,
@@ -16,8 +16,11 @@ import {
   saveOrderSuccess,
   setCustomers,
   setProducts,
+  updateOrderFailure,
   updateOrderStart,
+  updateOrderSuccess,
 } from "./actions";
+
 import axios from "axios";
 import { formatDate } from "../../../helpers/formatDate";
 import { v4 as uuid } from "uuid";
@@ -38,6 +41,8 @@ const initialState = {
   products: [],
   loading: false,
   error: null,
+  orderSaved:false,
+  orderUpdated:false
 };
 
 const reducer = (state, action) => {
@@ -122,7 +127,7 @@ const reducer = (state, action) => {
     case ActionTypes.SWITCH_UPDATE_MODE:
       return {...state,mode:'update'}
 
-      
+
     case ActionTypes.SWITCH_CREATE_MODE:
       return {...state,mode:'create'}
 
@@ -139,6 +144,15 @@ const reducer = (state, action) => {
         selectedCustomer:order.customer,
         loading: false, 
         error: null };
+
+        case ActionTypes.UPDATE_ORDER_START:
+          return { ...state, loading: true };
+    
+        case ActionTypes.UPDATE_ORDER_SUCCESS:
+          return { ...state, loading: false, orderUpdated: true };
+    
+        case ActionTypes.UPDATE_ORDER_FAILURE:
+          return { ...state, loading: false, error: action.payload };
     
 
     default:
@@ -198,9 +212,22 @@ export const OrderProvider = ({ children }) => {
     }
   };
 
+  const updateOrder = async (order) => {
+    dispatch(updateOrderStart());
+    try {
+      await axios.put(`http://localhost:3000/devis/${order.id}`, order);
+      dispatch(updateOrderSuccess());
+    } catch (error) {
+      dispatch(updateOrderFailure(error.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return (
     <OrderContext.Provider
-      value={{ store, dispatch, isLoading, error, saveOrder, getDevisByNumero }}
+      value={{ store, dispatch, isLoading, error, saveOrder, getDevisByNumero,updateOrder }}
     >
       {children}
     </OrderContext.Provider>

@@ -104,7 +104,7 @@ export const updateOrderSuccess = () => ({
 
 export const updateOrderFailure = (error) => ({
   type: ActionTypes.UPDATE_ORDER_FAILURE,
-  payload: error,
+  payload: error.message,
 });
 
 export const getDevisByNumeroStart = () => ({
@@ -126,5 +126,6 @@ export const switchUpdateMode = ()=>({
   type:ActionTypes.SWITCH_UPDATE_MODE
 })
 export const switchCreateMode = ()=>({
-  type:ActionTypes.SWITCH_CREATE_MODE
+  type:ActionTypes.SWITCH_CREATE_MODE_MODE
 })
+
