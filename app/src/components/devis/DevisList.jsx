@@ -3,7 +3,6 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -11,7 +10,8 @@ import {
   TableContainer,
   Heading,
 } from "@chakra-ui/react";
-
+import { FaEdit } from "react-icons/fa";
+import {Link} from 'react-router-dom'
 
 function DevisList() {
   const { devis, isLoading } = useDevis();
@@ -30,6 +30,7 @@ function DevisList() {
             <Th>Customer Name</Th>
             <Th>City</Th>
             <Th isNumeric>Total</Th>
+            <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -41,6 +42,9 @@ function DevisList() {
                 <Td>{d?.customer.name}</Td>
                 <Td>{d?.customer.city}</Td>
                 <Td isNumeric>{(d?.orderLines.reduce((total,line)=>total+(line.price*(1+(line.tva/100))*line.quantity),0)).toFixed(3)}</Td>
+                <Td>
+                  <Link to={`/devis/${d?.id}`}><FaEdit /></Link>
+                </Td>
               </Tr>
             );
           })}

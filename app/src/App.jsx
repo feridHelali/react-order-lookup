@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import DevisList from "./components/devis/DevisList";
-import DevisForm from "./components/devis/DevisForm";
 import NotfoundComponent from "./components/NotfoundComponent";
 import "./App.css";
 import DevisPage from "./components/devis/DevisPage";
@@ -22,7 +21,7 @@ function App() {
         <Routes>
           <Route path="" element={<DevisList />} />
           <Route path="devis" element={<DevisPage />} />
-          <Route path="devis/:numero" element={<DevisForm />} />
+          <Route path="devis/:numero" element={<DevisPage />} />
           <Route path="*" element={<NotfoundComponent />} />
         </Routes>
       </Router>

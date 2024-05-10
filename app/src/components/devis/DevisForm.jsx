@@ -10,13 +10,13 @@ import {
   Tr,
   Input,
   Flex,
-  Heading
+  Heading,
 } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
 import ProductLookupDialog from "../ProductLookupDialog";
 import { useOrderContext } from "./hooks/useOrderContext";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate, useParams } from "react-router-dom";
 import {
   addOrderLine,
   deleteOrderLine,
@@ -24,6 +24,7 @@ import {
   selectProduct,
   setSelectedCustomer,
   setSelectedProduct,
+  switchUpdateMode,
   updateOrderDate,
   updateOrderLine,
   updateQuantity,
@@ -33,14 +34,15 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 import { formatDate } from "../../helpers/formatDate";
 import DevisCustomerZone from "./DevisCustomerZone";
 import { AiOutlineSelect } from "react-icons/ai";
-import "../../index.css";
+import { useEffect } from "react";
 
 const DevisForm = () => {
-  const { store, dispatch,saveOrder } = useOrderContext();
+  const { store, dispatch, saveOrder, getDevisByNumero } = useOrderContext();
   const [isOpenCustomerDialog, setIsOpenCustomerDialog] = useState(false);
   const [isOpenProductDialog, setIsOpenProductDialog] = useState(false);
   const [selectedOrderLineIndex, setSelectedOrderLineIndex] = useState(null);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+  const { numero } = useParams();
 
   const handleOpenCustomerDialog = () => {
     setIsOpenCustomerDialog(true);
@@ -60,7 +62,7 @@ const DevisForm = () => {
   };
 
   const handleSelectCustomer = (customer) => {
-    dispatch(selectCustomer(customer.id,customer));
+    dispatch(selectCustomer(customer.id, customer));
     setIsOpenCustomerDialog(false);
     dispatch(setSelectedCustomer(customer));
   };
@@ -74,8 +76,8 @@ const DevisForm = () => {
       label: product.label,
       cateogory: product.cateogory,
       tva: product.tva,
-      price: product.price, // Assuming 'price' is the field containing the product price
-    }; // Get the selected order line index
+      price: product.price,
+    };
     dispatch(selectProduct(index, product.id));
     setIsOpenProductDialog(false);
     dispatch(setSelectedProduct(product));
@@ -96,14 +98,27 @@ const DevisForm = () => {
   };
 
   const handleDeleteOrderLine = (id) => {
-    dispatch(deleteOrderLine(id))
+    dispatch(deleteOrderLine(id));
   };
 
   const handleSaveOrder = () => {
-     saveOrder(store.order)
+    saveOrder(store.order);
   };
 
-  if(store?.orderSaved) navigate('/')
+  const handleUpdateOrder=()=>{
+    console.log('Updating Order')
+  }
+
+  useEffect(() => {
+    if (numero) {
+      dispatch(switchUpdateMode());
+      getDevisByNumero(numero);
+    }
+  }, [numero]);
+
+  if (store.loading) return <Heading>Loading</Heading>;
+  if (store.error) return <Heading colorScheme="red">{store.error}</Heading>;
+  if (store?.orderSaved) navigate("/");
 
   return (
     <Box w={"full"} p={"1rem"} m={"1rem"} boxShadow={"xl"}>
@@ -115,7 +130,7 @@ const DevisForm = () => {
           <FormLabel>Date Devis</FormLabel>
           <Input
             type="date"
-            value={formatDate(store.order.orderDate)}
+            value={formatDate(store.order?.orderDate) || formatDate(new Date())}
             onChange={(e) => handleUpdateOrderDate(e.target.value)}
           />
         </FormControl>
@@ -154,7 +169,13 @@ const DevisForm = () => {
       >
         Add Line +
       </Button>
-      <Table boxShadow={"sm"} ariant="striped" colorScheme="teal" fontSize={"sm"} fontFamily={"monospace"}>
+      <Table
+        boxShadow={"sm"}
+        ariant="striped"
+        colorScheme="teal"
+        fontSize={"sm"}
+        fontFamily={"monospace"}
+      >
         <Thead>
           <Tr>
             <Th>#</Th>
@@ -194,7 +215,7 @@ const DevisForm = () => {
                 />
               </Td>
               <Td>{orderLine.label}</Td>
-              <Td>{(orderLine.price?orderLine.price:0).toFixed(3)}</Td>
+              <Td>{(orderLine.price ? orderLine.price : 0).toFixed(3)}</Td>
               <Td>
                 <Input
                   type="number"
@@ -204,38 +225,80 @@ const DevisForm = () => {
                 />
               </Td>
               <Td>{`${orderLine.tva}%`}</Td>
-              <Td>{((orderLine.price && orderLine.quantity)?(orderLine.price * orderLine.quantity):0).toFixed(3)}</Td>
               <Td>
-                {((orderLine.price && orderLine.quantity)?(
-                  orderLine.price *
-                  orderLine.quantity *
-                  (1 + orderLine.tva / 100)
-                ):0).toFixed(3)}
+                {(orderLine.price && orderLine.quantity
+                  ? orderLine.price * orderLine.quantity
+                  : 0
+                ).toFixed(3)}
+              </Td>
+              <Td>
+                {(orderLine.price && orderLine.quantity
+                  ? orderLine.price *
+                    orderLine.quantity *
+                    (1 + orderLine.tva / 100)
+                  : 0
+                ).toFixed(3)}
               </Td>
               <Td>
                 {" "}
-                <Button onClick={() => handleDeleteOrderLine(orderLine.id)}><RiDeleteBin5Line /></Button>
+                <Button onClick={() => handleDeleteOrderLine(orderLine.id)}>
+                  <RiDeleteBin5Line />
+                </Button>
               </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
-      <Box my="1rem" py={"1rem"} display={"flex"} flexDirection={"column"} gap={"1rem"} maxWidth="100%" alignContent={"flex-end"} justifyItems={"flex-end"}>
+      <Box
+        my="1rem"
+        py={"1rem"}
+        display={"flex"}
+        flexDirection={"column"}
+        gap={"1rem"}
+        maxWidth="100%"
+        alignContent={"flex-end"}
+        justifyItems={"flex-end"}
+      >
         <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total HT : {computeTotalHt(store.order.orderLines).toFixed(3)}
         </Heading>
-        <Heading  fontSize={"sm"} fontFamily={"monospace"}>
+        <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total TVA : {computeTotalTVA(store.order.orderLines).toFixed(3)}
         </Heading>
         <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
         </Heading>
       </Box>
-      {/* <hr />
+      <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre> */}
-      <Button onClick={handleSaveOrder} isDisabled={!isOrderReadyToSave(store.order)} colorScheme="blue" p="1rem" m="1rem">Save Order</Button>
+      </pre>
+      {store.mode === "create" ? (
+        <Button
+          onClick={handleSaveOrder}
+          isDisabled={!isOrderReadyToSave(store.order)}
+          colorScheme="blue"
+          p="1rem"
+          m="1rem"
+        >
+          Save Order
+        </Button>
+      ) : store.mode === "update" ? (
+        <Button
+          onClick={handleUpdateOrder}
+          isDisabled={!isOrderReadyToSave(store.order)}
+          colorScheme="blue"
+          p="1rem"
+          m="1rem"
+        >
+          Update Order
+        </Button>
+      ) : (
+        <Heading colorScheme="">
+          Error: I cant figureout what action you want to perform CreateOrder Ou
+          UpdateOrder
+        </Heading>
+      )}
     </Box>
   );
 };
@@ -267,6 +330,10 @@ const computeTotalTVA = (orderLines) => {
   }, 0);
 };
 
-const isOrderReadyToSave = (order)=>{
-  return order.customerId && order.orderLines.length !==0 && !isNewOrderLineWithNoProduct(order.orderLines);
-}
+const isOrderReadyToSave = (order) => {
+  return (
+    order.customerId &&
+    order.orderLines.length !== 0 &&
+    !isNewOrderLineWithNoProduct(order.orderLines)
+  );
+};
