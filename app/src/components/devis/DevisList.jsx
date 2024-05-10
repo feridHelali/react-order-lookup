@@ -34,11 +34,11 @@ function DevisList() {
         <Tbody>
           {devis?.map((d) => {
             return (
-              <Tr key={d?.numero}>
-                <Td>{d?.numero}</Td>
-                <Td>{d?.date}</Td>
-                <Td>{d?.client}</Td>
-                <Td isNumeric>{d?.total}</Td>
+              <Tr key={d?.id}>
+                <Td>{d?.id}</Td>
+                <Td>{d?.orderDate}</Td>
+                <Td>{d?.customerId}</Td>
+                <Td isNumeric>{(d?.orderLines.reduce((total,line)=>total+(line.price*(1+(line.tva/100))*line.quantity),0)).toFixed(3)}</Td>
               </Tr>
             );
           })}

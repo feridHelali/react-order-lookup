@@ -6,7 +6,7 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { ActionTypes, setCustomers, setProducts } from "./actions";
+import { ActionTypes, saveOrderFailure, saveOrderStart, saveOrderSuccess, setCustomers, setProducts } from "./actions";
 import axios from "axios";
 import { formatDate } from "../../../helpers/formatDate";
 import {v4 as uuid} from 'uuid'
@@ -79,9 +79,12 @@ const reducer = (state, action) => {
       const afterDeleteLineById = state.order.orderLines.filter(line=>line.id!==lineId)
       return {...state, order: {...state.order, orderLines: afterDeleteLineById}};
 
-    case ActionTypes.SAVE_ORDER:
-      // Implement saving order to API
-      return state;
+      case ActionTypes.SAVE_ORDER_START:
+        return { ...state, loading: true };
+      case ActionTypes.SAVE_ORDER_SUCCESS:
+        return { ...state, loading: false, orderSaved: true };
+      case ActionTypes.SAVE_ORDER_FAILURE:
+        return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
@@ -117,8 +120,21 @@ export const OrderProvider = ({ children }) => {
     fetchProducts();
   }, []);
 
+  const saveOrder = async (order)=>{
+    dispatch(saveOrderStart());
+    try {
+      await axios.post("http://localhost:3000/devis",order);
+      dispatch(saveOrderSuccess());
+    } catch (error) {
+      dispatch(saveOrderFailure(error.message));
+    }finally{
+      setLoading(false)
+    }
+   
+  }
+
   return (
-    <OrderContext.Provider value={{ store, dispatch, isLoading, error }}>
+    <OrderContext.Provider value={{ store, dispatch, isLoading, error,saveOrder }}>
       {children}
     </OrderContext.Provider>
   );

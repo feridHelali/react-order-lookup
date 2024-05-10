@@ -16,10 +16,10 @@ import { FormControl, FormLabel } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
 import ProductLookupDialog from "../ProductLookupDialog";
 import { useOrderContext } from "./hooks/useOrderContext";
+import {useNavigate} from 'react-router-dom'
 import {
   addOrderLine,
   deleteOrderLine,
-  saveOrder,
   selectCustomer,
   selectProduct,
   setSelectedCustomer,
@@ -35,10 +35,11 @@ import { AiOutlineSelect } from "react-icons/ai";
 import "../../index.css";
 
 const DevisForm = () => {
-  const { store, dispatch } = useOrderContext();
+  const { store, dispatch,saveOrder } = useOrderContext();
   const [isOpenCustomerDialog, setIsOpenCustomerDialog] = useState(false);
   const [isOpenProductDialog, setIsOpenProductDialog] = useState(false);
   const [selectedOrderLineIndex, setSelectedOrderLineIndex] = useState(null);
+  const navigate=useNavigate()
 
   const handleOpenCustomerDialog = () => {
     setIsOpenCustomerDialog(true);
@@ -98,9 +99,11 @@ const DevisForm = () => {
   };
 
   const handleSaveOrder = () => {
-    dispatch(saveOrder());
-    // Call API to save order
+     saveOrder(store.order)
   };
+
+  if(store?.orderSaved) navigate('/')
+
   return (
     <Box w={"full"} p={"1rem"} m={"1rem"} boxShadow={"xl"}>
       <FormControl>

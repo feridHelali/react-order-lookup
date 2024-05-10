@@ -10,7 +10,10 @@ export const ActionTypes = {
     SET_SELECTED_PRODUCT: 'SET_SELECTED_PRODUCT',
     SAVE_ORDER: 'SAVE_ORDER',
     UPDATE_ORDER_DATE:'UPDATE_ORDER_DATE',
-    DELETE_ORDER_LINE:'DELETE_ORDER_LINE'
+    DELETE_ORDER_LINE:'DELETE_ORDER_LINE',
+    SAVE_ORDER_START: 'SAVE_ORDER_START',
+    SAVE_ORDER_SUCCESS: 'SAVE_ORDER_SUCCESS',
+    SAVE_ORDER_FAILURE: 'SAVE_ORDER_FAILURE',
   };
 
 
@@ -70,4 +73,15 @@ export const ActionTypes = {
   export const deleteOrderLine=(id)=>({
     type: ActionTypes.DELETE_ORDER_LINE,
     payload: id
+  })
+
+  export const saveOrderStart=()=>({
+    type:ActionTypes.SAVE_ORDER_START
+  })
+  export const saveOrderSuccess=()=>({
+    type:ActionTypes.SAVE_ORDER_SUCCESS
+  })
+  export const saveOrderFailure=(error)=>({
+    type:ActionTypes.SAVE_ORDER_SUCCESS,
+    payload:error
   })
