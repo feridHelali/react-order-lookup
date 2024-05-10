@@ -16,7 +16,7 @@ import { FormControl, FormLabel } from "@chakra-ui/react";
 import CustomerLookupDialog from "../CustomerLookupDialog";
 import ProductLookupDialog from "../ProductLookupDialog";
 import { useOrderContext } from "./hooks/useOrderContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   addOrderLine,
   deleteOrderLine,
@@ -42,7 +42,7 @@ const DevisForm = () => {
   const [isOpenCustomerDialog, setIsOpenCustomerDialog] = useState(false);
   const [isOpenProductDialog, setIsOpenProductDialog] = useState(false);
   const [selectedOrderLineIndex, setSelectedOrderLineIndex] = useState(null);
-  const navigate = useNavigate();
+
   const { numero } = useParams();
 
   const handleOpenCustomerDialog = () => {
@@ -120,11 +120,7 @@ const DevisForm = () => {
   if (store.loading) return <Heading>Loading</Heading>;
   if (store.error) return <Heading colorScheme="red">{store.error}</Heading>;
 
-  // useEffect(() => {
-  //   if (store?.orderSaved || store?.orderUpdated) {
-  //     navigate("/");
-  //   }
-  // }, [store?.orderSaved, store?.orderUpdated,navigate]);
+
 
   return (
     <Box w={"full"} p={"1rem"} m={"1rem"} boxShadow={"xl"}>

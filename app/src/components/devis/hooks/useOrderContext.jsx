@@ -24,6 +24,7 @@ import {
 import axios from "axios";
 import { formatDate } from "../../../helpers/formatDate";
 import { v4 as uuid } from "uuid";
+import { useNavigate} from "react-router-dom";
 
 const OrderContext = createContext();
 
@@ -163,6 +164,7 @@ export const OrderProvider = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -195,6 +197,7 @@ export const OrderProvider = ({ children }) => {
     try {
       await axios.post("http://localhost:3000/devis", order);
       dispatch(saveOrderSuccess());
+      navigate('/')
     } catch (error) {
       dispatch(saveOrderFailure(error.message));
     } finally {
@@ -217,6 +220,7 @@ export const OrderProvider = ({ children }) => {
     try {
       await axios.put(`http://localhost:3000/devis/${order.id}`, order);
       dispatch(updateOrderSuccess());
+      navigate('/')
     } catch (error) {
       dispatch(updateOrderFailure(error.message));
     } finally {
