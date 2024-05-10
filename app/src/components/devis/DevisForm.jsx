@@ -271,10 +271,10 @@ const DevisForm = () => {
           Total TTC : {computeTotalTTC(store.order.orderLines).toFixed(3)}
         </Heading>
       </Box>
-      <hr />
+      {/* <hr />
       <pre>
         <code>{JSON.stringify(store, null, 3)}</code>
-      </pre>
+      </pre> */}
       {store.mode === "create" ? (
         <Button
           onClick={handleSaveOrder}

@@ -9,6 +9,7 @@ import {
   TableCaption,
   TableContainer,
   Heading,
+  Flex
 } from "@chakra-ui/react";
 import { FaEdit } from "react-icons/fa";
 import {Link} from 'react-router-dom'
@@ -33,7 +34,7 @@ function DevisList() {
             <Th>Actions</Th>
           </Tr>
         </Thead>
-        <Tbody>
+        <Tbody >
           {devis?.map((d) => {
             return (
               <Tr key={d?.id}>

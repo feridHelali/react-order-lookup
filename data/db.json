@@ -199,14 +199,6 @@
           "price": 700
         },
         {
-          "id": "212dd038-fd25-4834-808e-e5beb93d141f",
-          "product": "1",
-          "quantity": 2,
-          "tva": 19,
-          "label": "Télévision SAMSUNG T325",
-          "price": 2300
-        },
-        {
           "id": "78ada1f0-9cd9-40ff-9974-4e615360dd7a",
           "product": "3",
           "quantity": 5,
@@ -338,6 +330,14 @@
           "id": "4d8a84a6-d614-4f24-b899-a13013821fc8",
           "product": "5",
           "quantity": 1,
+          "tva": 19,
+          "label": "Ordinateur Portable Lenovo 6230",
+          "price": 3500
+        },
+        {
+          "id": "ca2aa432-2f61-4fcb-ba2a-692feb6aba59",
+          "product": "5",
+          "quantity": 3,
           "tva": 19,
           "label": "Ordinateur Portable Lenovo 6230",
           "price": 3500
