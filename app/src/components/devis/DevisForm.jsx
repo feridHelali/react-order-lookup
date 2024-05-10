@@ -100,7 +100,8 @@ const DevisForm = () => {
         <FormControl>
           <FormLabel>Numero Devis</FormLabel>
         </FormControl>
-        <FormControl>
+      <Flex flexDirection={"row"} gap={".2rem"}>
+        <FormControl maxWidth={"50%"}>
           <FormLabel>Date Devis</FormLabel>
           <Input
             type="date"
@@ -108,13 +109,13 @@ const DevisForm = () => {
             onChange={(e) => handleUpdateOrderDate(e.target.value)}
           />
         </FormControl>
-      <Flex flexDirection={"row"} gap={".2rem"}>
 
         <Flex
-          flexDirection={"row"}
+          flexDirection={"column"}
           gap={"1rem"}
           alignItems={"start"}
           justifyContent={"start"}
+          maxW={"100%"}
         >
           <Button onClick={handleOpenCustomerDialog} p={"1rem"}>
             Select Customer

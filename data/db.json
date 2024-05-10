@@ -4,26 +4,45 @@
             "id": 1,
             "label": "Télévision SAMSUNG T325",
             "category": "Televison",
+            "tva":19,
             "price": 2300
         },
         {
             "id": 2,
             "label": "Cuisinière ATLAS 6532",
             "category": "Cuisiniere",
+            "tva":19,
             "price": 700
         },
         {
             "id": 3,
             "label": "Climatiseur SUMSUNG 24BTU",
             "category": "Climatiseur",
+            "tva":19,
             "price": 2300
         },
         {
             "id": 4,
             "label": "Refrigerateur Arcelik ART230",
             "category": "Televison",
+            "tva":19,
             "price": 1500
+        },
+        {
+            "id": 5,
+            "label": "Ordinateur Portable Lenovo 6230",
+            "category": "Ordinateur",
+            "tva":19,
+            "price": 3500
+        },
+        {
+            "id": 6,
+            "label": "Robot Menager Moulinex 5A320",
+            "category": "Menager",
+            "tva":19,
+            "price": 320
         }
+        
     ],
     "clients": [
         {
@@ -35,6 +54,26 @@
             "id": 2,
             "name": "Ste Em Manar",
             "city": "Sousse"
+        },
+        {
+            "id": 3,
+            "name": "Mohamed BEN AMMAR",
+            "city": "Mahdia"
+        },
+        {
+            "id": 4,
+            "name": "Ste Em Manar",
+            "city": "Sousse"
+        },
+        {
+            "id": 5,
+            "name": "Karim BENZIMA",
+            "city": "Tunis"
+        },
+        {
+            "id": 6,
+            "name": "Soued BELHAJ AMOR",
+            "city": "Sousse"
         }
     ],
     "devis": [
@@ -42,33 +81,20 @@
             "numero": 1,
             "date": "2024-05-01",
             "client":1,
-            "total":13800
-        },
-        {
-            "numero": 2,
-            "date": "2024-05-01",
-            "client":2,
-            "total":5200
-        },
-        {
-            "numero": 3,
-            "date": "2024-05-01",
-            "client":1,
-            "total":6300
-        }
-    ],
-    "ligneDevis": [
-        {
-            "id": 1,
-            "numeroDevis": 1,
-            "product": 1,
-            "qte": 1
-        },
-        {
-            "id": 2,
-            "numeroDevis": 1,
-            "product": 1,
-            "qte": 3
+            "total":13800,
+            "ligneDevis": [
+                {
+                    "id": 1,
+                    "product": 1,
+                    "qte": 1
+                },
+                {
+                    "id": 2,
+                    
+                    "product": 1,
+                    "qte": 3
+                }
+            ]
         }
     ]
 }
