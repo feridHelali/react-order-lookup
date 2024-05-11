@@ -22,7 +22,13 @@ export const ActionTypes = {
   GET_DEVIS_BY_NUMERO_SUCCESS: "GET_DEVIS_BY_NUMERO_SUCCESS",
   GET_DEVIS_BY_NUMERO_FAILURE: "GET_DEVIS_BY_NUMERO_FAILURE",
   SWITCH_UPDATE_MODE:"SWITCH_UPDATE_MODE",
-  SWITCH_CREATE_MODE:"SWITCH_CREATE_MODE"
+  SWITCH_CREATE_MODE:"SWITCH_CREATE_MODE",
+  FETCH_CUSTOMERS_START:"FETCH_CUSTOMERS_START",
+  FETCH_CUSTOMERS_SUCCESS:"FETCH_CUSTOMER_SUCCESS",
+  FETCH_CUSTOMERS_FALIURE:"FETCH_CUSTOMERS_FALIURE",
+  FETCH_PRODUCTS_START:"FETCH_PRODUCTS_START",
+  FETCH_PRODUCTS_SUCCESS:"FETCH_PRODUCTS_SUCCESS",
+  FETCH_PRODUCTS_FAILURE:"FETCH_PRODUCTS_FAILURE"
 };
 
 export const setCustomers = (customers) => ({
@@ -135,3 +141,31 @@ export const switchCreateMode = ()=>({
   type:ActionTypes.SWITCH_CREATE_MODE_MODE
 })
 
+export const fetchCustomersStart=()=>({
+  type:ActionTypes.FETCH_CUSTOMERS_START
+
+})
+
+export const fetchCustomersSuccess=()=>({
+  type:ActionTypes.FETCH_CUSTOMERS_SUCCESS
+
+})
+
+export const fetchCustomersFailure=(error)=>({
+  type:ActionTypes.FETCH_PRODUCTS_FAILURE,
+  payload:error.message
+
+})
+
+export const fetchProductsStart=()=>({
+  type:ActionTypes.FETCH_PRODUCTS_START
+})
+
+export const fetchProductsSuccess=()=>({
+  type: ActionTypes.FETCH_CUSTOMERS_SUCCESS
+})
+
+export const fetchProductsFailure=(error)=>({
+  type:ActionTypes.FETCH_PRODUCTS_FAILURE,
+  payload: error.message
+})

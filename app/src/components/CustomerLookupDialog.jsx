@@ -19,9 +19,10 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import { useOrderContext } from './devis/hooks/useOrderContext';
+import LoaderComponent from './LoaderComponent';
 
 const CustomerLookupDialog = ({ isOpen, onClose, onSelectCustomer }) => {
-  const {store,isLoading,error}=useOrderContext()
+  const {store,error}=useOrderContext()
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -45,8 +46,8 @@ const CustomerLookupDialog = ({ isOpen, onClose, onSelectCustomer }) => {
     onClose();
   };
 
-  if(isLoading) return <Heading>Loading ....</Heading>
-  if(error) return <Heading>{error.message}</Heading>
+  if(store.loading) return <LoaderComponent />
+  if(store.error) return <Heading color="orange">{error.message}</Heading>
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">

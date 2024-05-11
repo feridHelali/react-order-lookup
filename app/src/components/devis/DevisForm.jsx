@@ -36,6 +36,7 @@ import { formatDate } from "../../helpers/formatDate";
 import DevisCustomerZone from "./DevisCustomerZone";
 import { AiOutlineSelect } from "react-icons/ai";
 import { useEffect } from "react";
+import LoaderComponent from "../LoaderComponent";
 
 const DevisForm = () => {
   const { store, dispatch, saveOrder, getDevisByNumero, updateOrder } =
@@ -43,6 +44,7 @@ const DevisForm = () => {
   const [isOpenCustomerDialog, setIsOpenCustomerDialog] = useState(false);
   const [isOpenProductDialog, setIsOpenProductDialog] = useState(false);
   const [selectedOrderLineIndex, setSelectedOrderLineIndex] = useState(null);
+
 
   const { numero } = useParams();
 
@@ -123,8 +125,8 @@ const DevisForm = () => {
     }
   }, [numero]);
 
-  if (store.loading) return <Heading>Loading</Heading>;
-  if (store.error) return <Heading colorScheme="red">{store.error}</Heading>;
+  if (store.loading) return <LoaderComponent />
+  if (store.error) return <Heading color="red">{store.error}</Heading>;
 
 
 

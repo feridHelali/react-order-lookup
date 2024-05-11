@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from '@chakra-ui/react'
+import { debugContextDevtool } from 'react-context-devtool';
 
 import "./index.css";
 
@@ -24,3 +25,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </ChakraProvider>
   </React.StrictMode>
 );
+
+debugContextDevtool(document.getElementById("root"),{debugReducer:true,debugContext:true,disable:false,disableAutoMode:false})

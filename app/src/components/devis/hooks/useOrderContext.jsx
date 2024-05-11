@@ -1,13 +1,11 @@
-
-import React, {
-  createContext,
-  useReducer,
-  useContext,
-  useState,
-  useEffect,
-} from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
 import {
   ActionTypes,
+  fetchCustomersFailure,
+  fetchCustomersSuccess,
+  fetchProductsFailure,
+  fetchProductsStart,
+  fetchProductsSuccess,
   getDevisByNumeroFailure,
   getDevisByNumeroStart,
   getDevisByNumeroSuccess,
@@ -19,12 +17,14 @@ import {
   updateOrderFailure,
   updateOrderStart,
   updateOrderSuccess,
+  fetchCustomersStart,
 } from "./actions";
 
 import axios from "axios";
 import { formatDate } from "../../../helpers/formatDate";
 import { v4 as uuid } from "uuid";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ContextDevTool } from "react-context-devtool";
 
 const OrderContext = createContext();
 
@@ -42,8 +42,8 @@ const initialState = {
   products: [],
   loading: false,
   error: null,
-  orderSaved:false,
-  orderUpdated:false
+  orderSaved: false,
+  orderUpdated: false,
 };
 
 const reducer = (state, action) => {
@@ -71,7 +71,7 @@ const reducer = (state, action) => {
           ...state.order,
           orderLines: [
             ...state.order.orderLines,
-            { id: uuid(), product: null, quantity: 1, tva: 0, discount:0 },
+            { id: uuid(), product: null, quantity: 1, tva: 0, discount: 0 },
           ],
         },
       };
@@ -101,7 +101,7 @@ const reducer = (state, action) => {
       };
 
     case ActionTypes.UPDATE_DISCOUNT:
-      const { lineIndex:lIndex, discount } = action.payload;
+      const { lineIndex: lIndex, discount } = action.payload;
       const updatedOrderLinesforDiscout = [...state.order.orderLines];
       updatedOrderLinesforDiscout[lIndex].discount = discount;
       return {
@@ -114,8 +114,8 @@ const reducer = (state, action) => {
 
     case ActionTypes.SET_SELECTED_PRODUCT:
       return { ...state, selectedProduct: action.payload };
-   
-      case ActionTypes.UPDATE_ORDER_DATE:
+
+    case ActionTypes.UPDATE_ORDER_DATE:
       return { ...state, order: { ...state.order, orderDate: action.payload } };
 
     case ActionTypes.DELETE_ORDER_LINE:
@@ -138,11 +138,10 @@ const reducer = (state, action) => {
       return { ...state, loading: false, error: action.payload };
 
     case ActionTypes.SWITCH_UPDATE_MODE:
-      return {...state,mode:'update'}
-
+      return { ...state, mode: "update" };
 
     case ActionTypes.SWITCH_CREATE_MODE:
-      return {...state,mode:'create'}
+      return { ...state, mode: "create" };
 
     case ActionTypes.GET_DEVIS_BY_NUMERO_START:
       return { ...state, loading: true };
@@ -151,22 +150,41 @@ const reducer = (state, action) => {
       return { ...state, loading: false, error: action.payload };
 
     case ActionTypes.GET_DEVIS_BY_NUMERO_SUCCESS:
-      const order  = action.payload;
-      return { ...state, 
-        order:{...order,orderLines:[...order.orderLines]}, 
-        selectedCustomer:order.customer,
-        loading: false, 
-        error: null };
+      const order = action.payload;
+      return {
+        ...state,
+        order: { ...order, orderLines: [...order.orderLines] },
+        selectedCustomer: order.customer,
+        loading: false,
+        error: null,
+      };
 
-        case ActionTypes.UPDATE_ORDER_START:
-          return { ...state, loading: true };
-    
-        case ActionTypes.UPDATE_ORDER_SUCCESS:
-          return { ...state, loading: false, orderUpdated: true };
-    
-        case ActionTypes.UPDATE_ORDER_FAILURE:
-          return { ...state, loading: false, error: action.payload };
-    
+    case ActionTypes.UPDATE_ORDER_START:
+      return { ...state, loading: true };
+
+    case ActionTypes.UPDATE_ORDER_SUCCESS:
+      return { ...state, loading: false, orderUpdated: true };
+
+    case ActionTypes.UPDATE_ORDER_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.FETCH_CUSTOMERS_START:
+      return { ...state, loading: true, error: null };
+
+    case ActionTypes.FETCH_CUSTOMERS_SUCCESS:
+      return { ...state, loading: false, error: null };
+
+    case ActionTypes.FETCH_CUSTOMERS_FALIURE:
+      return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.FETCH_PRODUCTS_START:
+      return { ...state, loading: true, error: null };
+
+    case ActionTypes.FETCH_PRODUCTS_SUCCESS:
+      return { ...state, loading: false, error: null };
+
+    case ActionTypes.FETCH_PRODUCTS_FALIURE:
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return state;
@@ -174,29 +192,29 @@ const reducer = (state, action) => {
 };
 export const OrderProvider = ({ children }) => {
   const [store, dispatch] = useReducer(reducer, initialState);
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomers = async () => {
+      dispatch(fetchCustomersStart());
       try {
-        setLoading(true);
         const response = await axios.get("http://localhost:3000/clients");
+        dispatch(fetchCustomersSuccess());
         dispatch(setCustomers(response.data));
       } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
+        dispatch(fetchCustomersFailure(error));
       }
     };
 
     const fetchProducts = async () => {
+      dispatch(fetchProductsStart());
       try {
         const response = await axios.get("http://localhost:3000/products");
+        dispatch(fetchProductsSuccess());
         dispatch(setProducts(response.data));
       } catch (error) {
-        console.error("Error fetching products:", error);
+        dispatch(fetchProductsFailure(error));
       }
     };
 
@@ -209,11 +227,9 @@ export const OrderProvider = ({ children }) => {
     try {
       await axios.post("http://localhost:3000/devis", order);
       dispatch(saveOrderSuccess());
-      navigate('/')
+      navigate("/");
     } catch (error) {
       dispatch(saveOrderFailure(error.message));
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -232,21 +248,43 @@ export const OrderProvider = ({ children }) => {
     try {
       await axios.put(`http://localhost:3000/devis/${order.id}`, order);
       dispatch(updateOrderSuccess());
-      navigate('/')
+      navigate("/");
     } catch (error) {
       dispatch(updateOrderFailure(error.message));
-    } finally {
-      setLoading(false);
     }
   };
 
-
   return (
-    <OrderContext.Provider
-      value={{ store, dispatch, isLoading, error, saveOrder, getDevisByNumero,updateOrder }}
-    >
-      {children}
-    </OrderContext.Provider>
+    <>
+      <OrderContext.Provider
+        value={{
+          store,
+          dispatch,
+          saveOrder,
+          getDevisByNumero,
+          updateOrder,
+        }}
+      >
+        <ContextDevTool
+          context={OrderContext}
+          id="orderUniqContextId"
+          displayName="Order Context"
+        />
+        {children}
+        <OrderContext.Consumer>
+          {(values) => {
+            if (window.__REACT_CONTEXT_DEVTOOL) {
+              window.__REACT_CONTEXT_DEVTOOL({
+                id: "orderUniqContextId",
+                displayName: "Order Context",
+                values,
+              });
+            }
+            return null;
+          }}
+        </OrderContext.Consumer>
+      </OrderContext.Provider>
+    </>
   );
 };
 

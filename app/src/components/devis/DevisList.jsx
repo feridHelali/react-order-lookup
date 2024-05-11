@@ -13,11 +13,12 @@ import {
 } from "@chakra-ui/react";
 import { FaEdit } from "react-icons/fa";
 import {Link} from 'react-router-dom'
+import LoaderComponent from "../LoaderComponent";
 
 function DevisList() {
   const { devis, isLoading } = useDevis();
 
-  if (isLoading) return <Heading>Loading ...</Heading>;
+  if (isLoading) return <LoaderComponent />;
 
   return (
     <TableContainer p="1rem" m="1rem" boxShadow='xs' rounded='md' bg='gray:900'>

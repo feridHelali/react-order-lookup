@@ -96,13 +96,13 @@
           "price": 320
         },
         {
-          "id": "60153426-462a-4643-a1ac-81d3e56e23e6",
-          "product": "3",
-          "quantity": 2,
-          "discount": 10,
+          "id": "ce2c1379-3def-44a5-8c9c-322e28e84e6e",
+          "product": "2",
+          "quantity": 1,
           "tva": 19,
-          "label": "Climatiseur SUMSUNG 24BTU",
-          "price": 2300
+          "discount": 0,
+          "label": "Cuisinière ATLAS 6532",
+          "price": 700
         }
       ]
     },
@@ -388,6 +388,27 @@
           "tva": 19,
           "label": "Refrigerateur Arcelik ART230",
           "price": 1500
+        }
+      ]
+    },
+    {
+      "id": "8d6e",
+      "customerId": "1",
+      "customer": {
+        "id": "1",
+        "name": "Ste alfa Computers",
+        "city": "Mahdia"
+      },
+      "orderDate": "2024-05-11",
+      "orderLines": [
+        {
+          "id": "1dad6aab-691e-4b31-b2e4-3927bd3c45b7",
+          "product": "3",
+          "quantity": 1,
+          "tva": 19,
+          "discount": 0,
+          "label": "Climatiseur SUMSUNG 24BTU",
+          "price": 2300
         }
       ]
     }
