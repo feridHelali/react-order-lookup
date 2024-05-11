@@ -42,8 +42,6 @@ const initialState = {
   products: [],
   loading: false,
   error: null,
-  orderSaved: false,
-  orderUpdated: false,
 };
 
 const reducer = (state, action) => {
@@ -132,7 +130,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case ActionTypes.SAVE_ORDER_SUCCESS:
-      return { ...state, loading: false, orderSaved: true };
+      return { ...state, loading: false };
 
     case ActionTypes.SAVE_ORDER_FAILURE:
       return { ...state, loading: false, error: action.payload };
@@ -163,7 +161,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case ActionTypes.UPDATE_ORDER_SUCCESS:
-      return { ...state, loading: false, orderUpdated: true };
+      return { ...state, loading: false };
 
     case ActionTypes.UPDATE_ORDER_FAILURE:
       return { ...state, loading: false, error: action.payload };
@@ -229,7 +227,7 @@ export const OrderProvider = ({ children }) => {
       dispatch(saveOrderSuccess());
       navigate("/");
     } catch (error) {
-      dispatch(saveOrderFailure(error.message));
+      dispatch(saveOrderFailure(error));
     }
   };
 
@@ -239,7 +237,7 @@ export const OrderProvider = ({ children }) => {
       const response = await axios.get(`http://localhost:3000/devis/${numero}`);
       dispatch(getDevisByNumeroSuccess(response.data));
     } catch (error) {
-      dispatch(getDevisByNumeroFailure(error.message));
+      dispatch(getDevisByNumeroFailure(error));
     }
   };
 
@@ -250,7 +248,7 @@ export const OrderProvider = ({ children }) => {
       dispatch(updateOrderSuccess());
       navigate("/");
     } catch (error) {
-      dispatch(updateOrderFailure(error.message));
+      dispatch(updateOrderFailure(error));
     }
   };
 

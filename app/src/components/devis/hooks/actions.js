@@ -103,7 +103,7 @@ export const saveOrderSuccess = () => ({
 
 export const saveOrderFailure = (error) => ({
   type: ActionTypes.SAVE_ORDER_SUCCESS,
-  payload: error,
+  payload: error.message,
 });
 
 export const updateOrderStart = () => ({
