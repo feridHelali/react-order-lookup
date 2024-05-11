@@ -22,8 +22,7 @@ function DevisList() {
   return (
     <TableContainer p="1rem" m="1rem" boxShadow='xs' rounded='md' bg='gray:900'>
       <Heading fontSize={"sm"} textAlign={"center"} p={"1rem"}>Liste Des Devis</Heading>
-      <Table variant="striped" colorScheme="teal">
-        <TableCaption>Devis List</TableCaption>
+      <Table variant="striped" colorScheme="teal" fontSize={"sm"} boxShadow={"xl"}>
         <Thead>
           <Tr>
             <Th>#</Th>

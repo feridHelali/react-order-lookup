@@ -254,7 +254,7 @@ const DevisForm = () => {
 
                {/* Total Net HT */}
               <Td>
-                {(orderLine.price && orderLine.quantity && orderLine.discount
+                {(orderLine.price && orderLine.quantity 
                   ? orderLine.price *(1-(orderLine.discount/100))*orderLine.quantity
                   : 0
                 ).toFixed(3)}
@@ -262,7 +262,7 @@ const DevisForm = () => {
 
                {/* Total TTC*/}
               <Td>
-                {(orderLine.price && orderLine.quantity && orderLine.discount
+                {(orderLine.price && orderLine.quantity 
                   ? orderLine.price *
                     orderLine.quantity *
                     (1 + orderLine.tva / 100) *

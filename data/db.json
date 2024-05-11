@@ -90,9 +90,19 @@
           "id": "1b2b5574-1666-415d-baa7-daf9095eea72",
           "product": "6",
           "quantity": 1,
+          "discount": 10,
           "tva": 19,
           "label": "Robot Menager Moulinex 5A320",
           "price": 320
+        },
+        {
+          "id": "60153426-462a-4643-a1ac-81d3e56e23e6",
+          "product": "3",
+          "quantity": 2,
+          "discount": 10,
+          "tva": 19,
+          "label": "Climatiseur SUMSUNG 24BTU",
+          "price": 2300
         }
       ]
     },
@@ -110,6 +120,7 @@
           "id": "e97ae581-1437-4214-8819-9d956a3ce304",
           "product": "4",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Refrigerateur Arcelik ART230",
           "price": 1500
@@ -118,6 +129,7 @@
           "id": "39de7de5-4601-4b49-beb3-a75cf24fb8a7",
           "product": "6",
           "quantity": 2,
+          "discount": 0,
           "tva": 19,
           "label": "Robot Menager Moulinex 5A320",
           "price": 320
@@ -138,6 +150,7 @@
           "id": "0820244a-0046-4844-b6de-8949a9d7d68a",
           "product": "1",
           "quantity": 2,
+          "discount": 0,
           "tva": 19,
           "label": "Télévision SAMSUNG T325",
           "price": 2300
@@ -146,6 +159,7 @@
           "id": "15e7f7ed-f0e7-40c1-a569-bd669845821f",
           "product": "6",
           "quantity": 10,
+          "discount": 0,
           "tva": 19,
           "label": "Robot Menager Moulinex 5A320",
           "price": 320
@@ -166,6 +180,7 @@
           "id": "da56c635-ac4a-46b6-83f1-35e1750adeaf",
           "product": "5",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Ordinateur Portable Lenovo 6230",
           "price": 3500
@@ -174,6 +189,7 @@
           "id": "b76e6868-d7bd-4c09-ab52-1e9087688d06",
           "product": "4",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Refrigerateur Arcelik ART230",
           "price": 1500
@@ -194,6 +210,7 @@
           "id": "cbcd59c5-7cce-43bb-8ae1-56e9cf21cbb0",
           "product": "2",
           "quantity": 2,
+          "discount": 0,
           "tva": 19,
           "label": "Cuisinière ATLAS 6532",
           "price": 700
@@ -202,6 +219,7 @@
           "id": "78ada1f0-9cd9-40ff-9974-4e615360dd7a",
           "product": "3",
           "quantity": 5,
+          "discount": 25,
           "tva": 19,
           "label": "Climatiseur SUMSUNG 24BTU",
           "price": 2300
@@ -222,6 +240,7 @@
           "id": "c2ded769-44c6-400c-b28b-dd44a2a60f38",
           "product": "4",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Refrigerateur Arcelik ART230",
           "price": 1500
@@ -242,6 +261,7 @@
           "id": "389f3ccb-b5dd-4fea-87ff-3fd1e6518aca",
           "product": "1",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Télévision SAMSUNG T325",
           "price": 2300
@@ -250,6 +270,7 @@
           "id": "2ee09aba-e514-4bc3-a003-3b94500984a0",
           "product": "3",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Climatiseur SUMSUNG 24BTU",
           "price": 2300
@@ -270,6 +291,7 @@
           "id": "b279cfaf-04ad-4d3a-9959-0be63eff81be",
           "product": "2",
           "quantity": 2,
+          "discount": 0,
           "tva": 19,
           "label": "Cuisinière ATLAS 6532",
           "price": 700
@@ -290,6 +312,7 @@
           "id": "a7b6bbee-1911-4e8d-8a71-96f7cdcf1600",
           "product": "3",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Climatiseur SUMSUNG 24BTU",
           "price": 2300
@@ -310,6 +333,7 @@
           "id": "248aa7c8-ce71-4e97-b731-f65903b70ba9",
           "product": "4",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Refrigerateur Arcelik ART230",
           "price": 1500
@@ -330,6 +354,7 @@
           "id": "4d8a84a6-d614-4f24-b899-a13013821fc8",
           "product": "5",
           "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Ordinateur Portable Lenovo 6230",
           "price": 3500
@@ -337,10 +362,32 @@
         {
           "id": "ca2aa432-2f61-4fcb-ba2a-692feb6aba59",
           "product": "5",
-          "quantity": 3,
+          "quantity": 1,
+          "discount": 0,
           "tva": 19,
           "label": "Ordinateur Portable Lenovo 6230",
           "price": 3500
+        }
+      ]
+    },
+    {
+      "id": "eadc",
+      "customerId": "5",
+      "customer": {
+        "id": "5",
+        "name": "Karim BENZIMA",
+        "city": "Tunis"
+      },
+      "orderDate": "2024-05-11",
+      "orderLines": [
+        {
+          "id": "45f1c24a-947e-4a83-a4ee-7f7e51cc0955",
+          "product": "4",
+          "quantity": 1,
+          "discount": 0,
+          "tva": 19,
+          "label": "Refrigerateur Arcelik ART230",
+          "price": 1500
         }
       ]
     }
