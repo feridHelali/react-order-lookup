@@ -50,8 +50,10 @@ const reducer = (state, action) => {
   switch (action.type) {
     case ActionTypes.SET_CUSTOMERS:
       return { ...state, customers: action.payload };
+
     case ActionTypes.SET_PRODUCTS:
       return { ...state, products: action.payload };
+
     case ActionTypes.SELECT_CUSTOMER:
       return {
         ...state,
@@ -61,6 +63,7 @@ const reducer = (state, action) => {
           customer: action.payload.customer,
         },
       };
+
     case ActionTypes.ADD_ORDER_LINE:
       return {
         ...state,
@@ -68,7 +71,7 @@ const reducer = (state, action) => {
           ...state.order,
           orderLines: [
             ...state.order.orderLines,
-            { id: uuid(), product: null, quantity: 1, tva: 0 },
+            { id: uuid(), product: null, quantity: 1, tva: 0, discount:0 },
           ],
         },
       };
@@ -95,6 +98,15 @@ const reducer = (state, action) => {
       return {
         ...state,
         order: { ...state.order, orderLines: updatedOrderLines },
+      };
+
+    case ActionTypes.UPDATE_DISCOUNT:
+      const { lineIndex:lIndex, discount } = action.payload;
+      const updatedOrderLinesforDiscout = [...state.order.orderLines];
+      updatedOrderLinesforDiscout[lIndex].discount = discount;
+      return {
+        ...state,
+        order: { ...state.order, orderLines: updatedOrderLinesforDiscout },
       };
 
     case ActionTypes.SET_SELECTED_CUSTOMER:

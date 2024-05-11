@@ -6,6 +6,7 @@ export const ActionTypes = {
   UPDATE_ORDER_LINE: "UPDATE_ORDER_LINE",
   SELECT_PRODUCT: "SELECT_PRODUCT",
   UPDATE_QUANTITY: "UPDATE_QUANTITY",
+  UPDATE_DISCOUNT: "UPDATE_DISCOUNT",
   SET_SELECTED_CUSTOMER: "SET_SELECTED_CUSTOMER",
   SET_SELECTED_PRODUCT: "SET_SELECTED_PRODUCT",
   SAVE_ORDER: "SAVE_ORDER",
@@ -57,6 +58,11 @@ export const updateQuantity = (lineIndex, quantity) => ({
   type: ActionTypes.UPDATE_QUANTITY,
   payload: { lineIndex, quantity },
 });
+
+export const updateDiscount = (lineIndex, discount)=>({
+  type:ActionTypes.UPDATE_DISCOUNT,
+  payload: {lineIndex,discount}
+})
 
 export const setSelectedCustomer = (customer) => ({
   type: ActionTypes.SET_SELECTED_CUSTOMER,

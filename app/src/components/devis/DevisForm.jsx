@@ -28,6 +28,7 @@ import {
   updateOrderDate,
   updateOrderLine,
   updateQuantity,
+  updateDiscount
 } from "./hooks/actions";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
@@ -93,6 +94,11 @@ const DevisForm = () => {
     const quantityAsNumber = Number.parseFloat(quantity);
     dispatch(updateQuantity(lineIndex, quantityAsNumber));
   };
+
+  const handleDiscountChange =(discount,lineIndex)=>{
+    const discountAsNumber = Number.parseFloat(discount)
+    dispatch(updateDiscount(lineIndex,discountAsNumber))
+  }
 
   const handleUpdateOrderDate = (orderDate) => {
     dispatch(updateOrderDate(formatDate(orderDate)));
@@ -186,7 +192,9 @@ const DevisForm = () => {
             <Th>Price HT</Th>
             <Th>Quantity</Th>
             <Th>TVA</Th>
+            <Th>Discount</Th>
             <Th>Total HT</Th>
+            <Th>Total Net</Th>
             <Th>Total TTC</Th>
             <Th>Actions</Th>
           </Tr>
@@ -228,16 +236,37 @@ const DevisForm = () => {
               </Td>
               <Td>{`${orderLine.tva}%`}</Td>
               <Td>
+                <Input
+                  type="number"
+                  min="1"
+                  value={orderLine.discount}
+                  onChange={(e) => handleDiscountChange(e.target.value, index)}
+                />
+                </Td>
+
+                {/* Total HT */}
+              <Td>
                 {(orderLine.price && orderLine.quantity
                   ? orderLine.price * orderLine.quantity
                   : 0
                 ).toFixed(3)}
               </Td>
+
+               {/* Total Net HT */}
               <Td>
-                {(orderLine.price && orderLine.quantity
+                {(orderLine.price && orderLine.quantity && orderLine.discount
+                  ? orderLine.price *(1-(orderLine.discount/100))*orderLine.quantity
+                  : 0
+                ).toFixed(3)}
+              </Td>
+
+               {/* Total TTC*/}
+              <Td>
+                {(orderLine.price && orderLine.quantity && orderLine.discount
                   ? orderLine.price *
                     orderLine.quantity *
-                    (1 + orderLine.tva / 100)
+                    (1 + orderLine.tva / 100) *
+                    (1-(orderLine.discount/100))
                   : 0
                 ).toFixed(3)}
               </Td>
@@ -263,6 +292,9 @@ const DevisForm = () => {
       >
         <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total HT : {computeTotalHt(store.order.orderLines).toFixed(3)}
+        </Heading>
+        <Heading fontSize={"sm"} fontFamily={"monospace"}>
+          Total Net HT : {computeTotalNetHt(store.order.orderLines).toFixed(3)}
         </Heading>
         <Heading fontSize={"sm"} fontFamily={"monospace"}>
           Total TVA : {computeTotalTVA(store.order.orderLines).toFixed(3)}
@@ -317,18 +349,25 @@ const computeTotalHt = (orderLines) => {
     return total + line.price * line.quantity;
   }, 0);
 };
+const computeTotalNetHt = (orderLines) => {
+  if (orderLines?.length === 0) return 0;
+  return orderLines.reduce((total, line) => {
+    return total + (line.price *(1-(line.discount/100))* line.quantity);
+  }, 0);
+};
+
 
 const computeTotalTTC = (orderLines) => {
   if (orderLines?.length === 0) return 0;
   return orderLines.reduce((total, line) => {
-    return total + line.price * line.quantity * (1 + line.tva / 100);
+    return total + (line.price * line.quantity * (1 +( line.tva / 100))*(1-(line.discount/100)));
   }, 0);
 };
 
 const computeTotalTVA = (orderLines) => {
   if (orderLines?.length === 0) return 0;
   return orderLines.reduce((total, line) => {
-    return total + line.price * line.quantity * (line.tva / 100);
+    return total + line.price * line.quantity * (1-(line.discount/100))*(line.tva / 100);
   }, 0);
 };
 
